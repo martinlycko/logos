@@ -1,0 +1,1 @@
+# Will containt the class structure and associated methods of an event log

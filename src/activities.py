@@ -1,0 +1,1 @@
+# Will containt the class structure and associated methods to capture activities and their core KPIs

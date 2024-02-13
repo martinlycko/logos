@@ -1,0 +1,1 @@
+# Will containt the class structure and associated methods to capture resources and their core KPIs

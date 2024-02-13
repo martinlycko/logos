@@ -1,2 +1,3 @@
 # logos
-A work-in-process library to analyse event logs (of business process, user behaviour,...)
+## A work-in-process library to analyse event logs
+to determine process performance and analyse user bahviour

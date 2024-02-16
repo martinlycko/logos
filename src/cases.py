@@ -2,6 +2,7 @@ from case import Case
 
 class Cases:
     # A class to capture all activities
+
     case_list = []
     count = 0
 

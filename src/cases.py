@@ -3,8 +3,8 @@ from case import Case
 class Cases:
     # A class to capture all activities
 
-    case_list = []
-    count = 0
+    case_list = []      # A list of cases
+    count = 0           # Incrementing counter to generate case IDs
 
     def __init__(self) -> None:
         case_list = []

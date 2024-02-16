@@ -2,8 +2,9 @@ from activity import Activity
 
 class Activities:
     # A class to capture all activities
-    activity_list = []
-    count = 0
+    
+    activity_list = []      # A list of activities
+    count = 0               # Incrementing counter to activity IDs
 
     def __init__(self) -> None:
         activity_list = []

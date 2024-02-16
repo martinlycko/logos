@@ -2,8 +2,9 @@ from resource_event import Resource
 
 class Resources:
     # A class to capture all resources
-    resource_list = []
-    count = 0
+    
+    resource_list = []      # A list of resource
+    count = 0               # Incrementing counter to generate resource IDs
 
     def __init__(self) -> None:
         resource_list = []

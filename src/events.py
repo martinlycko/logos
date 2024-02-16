@@ -2,8 +2,9 @@ from event import Event
 
 class Events:
     # A class to capture all events
-    event_list = []
-    count = 0
+    
+    event_list = []     # A list of events
+    count = 0           # Incrementing counter to generate event IDs
 
     def __init__(self) -> None:
         event_list = []

@@ -14,3 +14,10 @@ class Resources:
         self.count = self.count+1
         new_resource = Resource(self.count, resource_name)
         self.resource_list.append(new_resource)
+
+    def get_id_if_in_list(self, name):
+        resource_ID = -1
+        for resource in self.resource_list:
+            if resource.name == name:
+                resource_ID = resource.id
+        return resource_ID

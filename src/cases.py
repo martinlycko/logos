@@ -10,7 +10,14 @@ class Cases:
         case_list = []
         count = 0
 
-    def add_case(self, case_attributes):
+    def add_case(self, id, case_attributes):
         self.count = self.count+1
-        new_case = Case(self.count, case_attributes)
+        new_case = Case(id, case_attributes)
         self.case_list.append(new_case)
+
+    def check_if_in_list(self, id):
+        in_list = False
+        for case in self.case_list:
+            if case.id == id:
+                in_list = True
+        return in_list

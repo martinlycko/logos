@@ -20,4 +20,5 @@ class Resources:
         for resource in self.resource_list:
             if resource.name == name:
                 resource_ID = resource.id
+                break
         return resource_ID

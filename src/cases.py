@@ -20,4 +20,5 @@ class Cases:
         for case in self.case_list:
             if case.id_original == id_original:
                 case_ID = case.id_internal
+                break
         return case_ID

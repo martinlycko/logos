@@ -20,4 +20,5 @@ class Activities:
         for activity in self.activity_list:
             if activity.name == name:
                 activity_ID = activity.id
+                break
         return activity_ID

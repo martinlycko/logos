@@ -20,4 +20,5 @@ class Events:
         for event in self.event_list:
             if event.id_original == id_original:
                 event_ID = event.id_internal
+                break
         return event_ID

@@ -11,3 +11,9 @@ class EventLog:
     cases = Cases()
     activities = Activities()
     resources = Resources()
+
+    def __init__(self) -> None:
+        self.events = Events()
+        self.cases = Cases()
+        self.activities = Activities()
+        self.resources = Resources()

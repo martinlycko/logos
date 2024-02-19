@@ -16,8 +16,8 @@ class Cases:
         self.case_list.append(new_case)
 
     def get_id_if_in_list(self, id_original):
-        # Returns a result tuple with first value indicating if ID has been found, and the second value being the ID if it has been found
-        result = (False, -1)
+        # Returns a result list with first value indicating if ID has been found, and the second value being the ID if it has been found
+        result = [False, -1]
         for case in self.case_list:
             if case.id_original == id_original:
                 result[0] = True

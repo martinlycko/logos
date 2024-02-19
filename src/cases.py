@@ -16,9 +16,10 @@ class Cases:
         self.case_list.append(new_case)
 
     def get_id_if_in_list(self, id_original):
-        case_ID = -1
+        result = (False, -1)
         for case in self.case_list:
             if case.id_original == id_original:
-                case_ID = case.id_internal
+                result[0] = True
+                result[1] = case.id_internal
                 break
-        return case_ID
+        return result

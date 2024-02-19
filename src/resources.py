@@ -16,9 +16,10 @@ class Resources:
         self.resource_list.append(new_resource)
 
     def get_id_if_in_list(self, name):
-        resource_ID = -1
+        result = (False, -1)
         for resource in self.resource_list:
             if resource.name == name:
-                resource_ID = resource.id
+                result[0] = True
+                result[1] = resource.id
                 break
-        return resource_ID
+        return result

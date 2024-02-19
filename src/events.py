@@ -16,9 +16,10 @@ class Events:
         self.event_list.append(new_event)
 
     def get_id_if_in_list(self, id_original):
-        event_ID = -1
+        result = (False, -1)
         for event in self.event_list:
             if event.id_original == id_original:
-                event_ID = event.id_internal
+                result[0] = True
+                result[1] = event.id_internal
                 break
-        return event_ID
+        return result

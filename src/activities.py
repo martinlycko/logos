@@ -16,6 +16,7 @@ class Activities:
         self.activity_list.append(new_activity)
 
     def get_id_if_in_list(self, name):
+        # Returns a result tuple with first value indicating if ID has been found, and the second value being the ID if it has been found
         result = (False, -1)
         for activity in self.activity_list:
             if activity.name == name:

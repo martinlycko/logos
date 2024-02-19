@@ -16,6 +16,7 @@ class Events:
         self.event_list.append(new_event)
 
     def get_id_if_in_list(self, id_original):
+        # Returns a result tuple with first value indicating if ID has been found, and the second value being the ID if it has been found
         result = (False, -1)
         for event in self.event_list:
             if event.id_original == id_original:

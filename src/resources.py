@@ -24,3 +24,9 @@ class Resources:
                 result[1] = resource.id
                 break
         return result
+    
+    def get_names(self):
+        names = []
+        for resource in self.resource_list:
+            names.append(resource.name)
+        return names

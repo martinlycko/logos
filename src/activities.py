@@ -24,3 +24,9 @@ class Activities:
                 result[1] = activity.id
                 break
         return result
+    
+    def get_names(self):
+        names = []
+        for activity in self.activity_list:
+            names.append(activity.name)
+        return names

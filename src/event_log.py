@@ -17,3 +17,31 @@ class EventLog:
         self.cases = Cases()
         self.activities = Activities()
         self.resources = Resources()
+
+    def add_event(self, original_event_id, original_case_id, finish_time, activity_name, resource_name):
+        # Adds a single event to each list of the event log
+
+        # Check/get IDs of the event, case, activity, and resource already in the log
+        internal_event_id = self.events.get_id_if_in_list(original_event_id)
+        internal_case_id = self.cases.get_id_if_in_list(original_case_id)
+        internal_activity_id = self.events.get_id_if_in_list(activity_name)
+        internal_resource_id = self.events.get_id_if_in_list(resource_name)
+     
+        # Add case to case list if not in there already
+        if internal_case_id[0] == False:
+            self.cases.add_case(original_case_id, [])
+
+        # Add activity to activity list if not in there already
+        if internal_activity_id[0] == False:
+            self.activities.add_activity(activity_name)
+        
+        # Add resource to resource list if not in there already
+        if internal_resource_id[0] == False:
+            self.resources.add_resource(resource_name)
+            
+        # Get added IDS and add event to event list if not in there already
+        internal_case_id = self.cases.get_id_if_in_list(original_case_id)
+        internal_activity_id = self.events.get_id_if_in_list(activity_name)
+        internal_resource_id = self.events.get_id_if_in_list(resource_name)
+        if internal_event_id[0] == False:
+            self.events.add_event(original_event_id, "", finish_time, internal_case_id[1], internal_activity_id[1], internal_resource_id[1], [])

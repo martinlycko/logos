@@ -45,3 +45,10 @@ class EventLog:
         internal_resource_id = self.events.get_id_if_in_list(resource_name)
         if internal_event_id[0] == False:
             self.events.add_event(original_event_id, "", finish_time, internal_case_id[1], internal_activity_id[1], internal_resource_id[1], [])
+
+    def add_events_from_CSV(path, column_types):
+        # Take a path to CSV file and let the user input the type of each column
+        # Column types can be event ID, case ID, resource name, actvity name, finish time,...
+        # Iterate over the csv file row by row
+        # In each row, run the add_event function matching the columns to the parameters of the add_event function using the column types
+        return False

@@ -1,3 +1,5 @@
+import csv
+
 from events import Events
 from cases import Cases
 from activities import Activities
@@ -24,7 +26,7 @@ class EventLog:
         # Check/get IDs of the event, case, activity, and resource already in the log
         internal_event_id = self.events.get_id_if_in_list(original_event_id)
         internal_case_id = self.cases.get_id_if_in_list(original_case_id)
-        internal_activity_id = self.events.get_id_if_in_list(activity_name)
+        internal_activity_id = self.activities.get_id_if_in_list(activity_name)
         internal_resource_id = self.events.get_id_if_in_list(resource_name)
      
         # Add case to case list if not in there already
@@ -46,9 +48,20 @@ class EventLog:
         if internal_event_id[0] == False:
             self.events.add_event(original_event_id, "", finish_time, internal_case_id[1], internal_activity_id[1], internal_resource_id[1], [])
 
-    def add_events_from_CSV(path, column_types):
+    def add_events_from_CSV(self, path, column_types):
         # Take a path to CSV file and let the user input the type of each column
         # Column types can be event ID, case ID, resource name, actvity name, finish time,...
         # Iterate over the csv file row by row
         # In each row, run the add_event function matching the columns to the parameters of the add_event function using the column types
-        return False
+        
+        with open(path) as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=';')
+            line_count = 0
+            for row in csv_reader:
+                self.add_event(row[1], row[0], row[2], row[3], row[4])
+
+elog = EventLog()
+elog.add_events_from_CSV("sample_data/running-example.csv", [])
+print(elog.activities.count)
+for act in elog.activities.get_names():
+    print(act)

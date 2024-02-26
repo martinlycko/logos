@@ -77,10 +77,14 @@ class EventLog:
         # Returns the number of cases that an activity has been executed for
         return False
     
+    def activity_throughput_time(self, id_external):
+        # Returns the throughput time for a single activity
+        return False
+    
     def case_details_with_external_ID(self, id_external):
         # Returns descriptions and details of a sigle case
         return False
     
-    def case_lead_time(self, id_external):
-        # Returns the lead time for a single case
+    def case_throughput_time(self, id_external):
+        # Returns the throughput time for a single case
         return False

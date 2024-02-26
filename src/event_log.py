@@ -49,6 +49,7 @@ class EventLog:
             self.events.add_event(original_event_id, "", finish_time, internal_case_id[1], internal_activity_id[1], internal_resource_id[1], [])
 
     def add_events_from_CSV(self, path, column_types):
+
         # Take a path to CSV file and let the user input the type of each column
         # Column types can be event ID, case ID, resource name, actvity name, finish time,...
         # Iterate over the csv file row by row
@@ -63,3 +64,23 @@ class EventLog:
                 else:
                     self.add_event(row[1], row[0], row[2], row[3], row[4])
                 line_count = line_count+1
+
+    def shape(self):
+        # Returns descriptive statistics about the event log
+        return False
+    
+    def activity_execution_count(self, activity_name):
+        # Returns the number of times an activity has been executed
+        return False
+    
+    def activity_case_count(self, activity_name):
+        # Returns the number of cases that an activity has been executed for
+        return False
+    
+    def case_details_with_external_ID(self, id_external):
+        # Returns descriptions and details of a sigle case
+        return False
+    
+    def case_lead_time(self, id_external):
+        # Returns the lead time for a single case
+        return False

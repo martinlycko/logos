@@ -27,7 +27,7 @@ class EventLog:
         internal_event_id = self.events.get_id_if_in_list(original_event_id)
         internal_case_id = self.cases.get_id_if_in_list(original_case_id)
         internal_activity_id = self.activities.get_id_if_in_list(activity_name)
-        internal_resource_id = self.events.get_id_if_in_list(resource_name)
+        internal_resource_id = self.resources.get_id_if_in_list(resource_name)
      
         # Add case to case list if not in there already
         if internal_case_id[0] == False:
@@ -44,7 +44,7 @@ class EventLog:
         # Get added IDS and add event to event list if not in there already
         internal_case_id = self.cases.get_id_if_in_list(original_case_id)
         internal_activity_id = self.events.get_id_if_in_list(activity_name)
-        internal_resource_id = self.events.get_id_if_in_list(resource_name)
+        internal_resource_id = self.resources.get_id_if_in_list(resource_name)
         if internal_event_id[0] == False:
             self.events.add_event(original_event_id, "", finish_time, internal_case_id[1], internal_activity_id[1], internal_resource_id[1], [])
 
@@ -56,12 +56,10 @@ class EventLog:
         
         with open(path) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=';')
-            line_count = 0
+            line_count = 1
             for row in csv_reader:
-                self.add_event(row[1], row[0], row[2], row[3], row[4])
-
-elog = EventLog()
-elog.add_events_from_CSV("sample_data/running-example.csv", [])
-print(elog.activities.count)
-for act in elog.activities.get_names():
-    print(act)
+                if line_count == 1:
+                    pass
+                else:
+                    self.add_event(row[1], row[0], row[2], row[3], row[4])
+                line_count = line_count+1

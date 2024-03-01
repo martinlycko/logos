@@ -68,11 +68,3 @@ class EventLog:
     def shape(self):
         # Returns descriptive statistics about the event log
         return False
-    
-elog = EventLog()
-elog.add_events_from_CSV("sample_data/running-example.csv", [])
-print(elog.cases.count)
-
-print(elog)
-print(elog.activities.log)
-print(elog.activities.activity_list[1].log)

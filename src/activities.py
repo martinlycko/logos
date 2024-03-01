@@ -5,14 +5,16 @@ class Activities:
     
     activity_list = []      # A list of activities
     count = 0               # Incrementing counter to activity IDs
+    log = ""                # A reference to the event log in which this activity can be found
 
-    def __init__(self) -> None:
-        activity_list = []
-        count = 0
+    def __init__(self, log) -> None:
+        self.activity_list = []
+        self.count = 0
+        self.log = log
 
     def add_activity(self, activity_name):
         self.count = self.count+1
-        new_activity = Activity(self.count, activity_name)
+        new_activity = Activity(self.count, activity_name, self.log)
         self.activity_list.append(new_activity)
 
     def get_id_if_in_list(self, name):

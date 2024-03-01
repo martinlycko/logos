@@ -9,15 +9,15 @@ class EventLog:
     # A class to capture the entire event log structure
     
     # Each event log contains a list of events, cases, activities, and resources
-    events = Events()
-    cases = Cases()
-    activities = Activities()
-    resources = Resources()
+    events = ""
+    cases = ""
+    activities = ""
+    resources = ""
 
     def __init__(self) -> None:
         self.events = Events()
         self.cases = Cases()
-        self.activities = Activities()
+        self.activities = Activities(self)
         self.resources = Resources()
 
     def add_event(self, original_event_id, original_case_id, finish_time, activity_name, resource_name):
@@ -68,3 +68,11 @@ class EventLog:
     def shape(self):
         # Returns descriptive statistics about the event log
         return False
+    
+elog = EventLog()
+elog.add_events_from_CSV("sample_data/running-example.csv", [])
+print(elog.cases.count)
+
+print(elog)
+print(elog.activities.log)
+print(elog.activities.activity_list[1].log)

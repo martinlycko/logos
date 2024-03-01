@@ -9,3 +9,11 @@ class Case:
         self.id_internal = id_internal
         self.id_original = id_original
         self.attributes = attributes
+    
+    def case_details(self, id_external):
+        # Returns descriptions and details of a sigle case
+        return False
+    
+    def turnaround_time(self, id_external):
+        # Returns the throughput time for a single case
+        return False

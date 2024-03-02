@@ -1,4 +1,3 @@
-import pytest
 from event_log import EventLog
 
 if __name__ == "__main__":
@@ -11,3 +10,11 @@ if __name__ == "__main__":
     assert elog.cases.count == 6
     assert elog.activities.count == 8
     assert elog.resources.count == 6
+
+    # To be converted into a proper test
+    case=elog.cases.case_list[1].case_details()
+    print(case["path"][0].time_end)
+    print(case["path"][1].time_end)
+    print(case["path"][2].time_end)
+    print(case["path"][3].time_end)
+    print(case["path"][4].time_end)

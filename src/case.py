@@ -12,10 +12,22 @@ class Case:
         self.attributes = attributes
         self.log = log
     
-    def case_details(self, id_external):
-        # Returns descriptions and details of a sigle case
-        return False
+    def case_details(self):
+        # Returns descriptions and details of a sigle case searched for using its original ID
+        
+        # Create a dictionary to return 
+        case = {}
+        case['original ID'] = self.id_original
+        case['attributes'] = self.attributes
+        case['path'] = []
+
+        # Search the event log for events that relate to this case
+        for event in self.log.events.event_list:
+            if event.id_case == self.id_internal:
+                case['path'].append(event)
+        
+        return case
     
-    def turnaround_time(self, id_external):
+    def turnaround_time(self, id_original):
         # Returns the throughput time for a single case
         return False

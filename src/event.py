@@ -9,8 +9,9 @@ class Event:
     id_activity = 0     # Activity IDs are picked up from the event log and need to correspond to those in the activities list
     id_resource = 0     # Resource IDs are picked up from the event log and need to correspond to those in the resource list
     attributes = {}     # Optinal list of event related attributes (e.g. cost to process this event)
+    log = ""            # A reference to the event log in which this activity can be found
 
-    def __init__(self, id_internal, id_original, starttime, endtime, case, activity, resource, attributes) -> None:
+    def __init__(self, id_internal, id_original, starttime, endtime, case, activity, resource, attributes, log) -> None:
         self.id_internal = id_internal
         self.id_original = id_original
         self.time_start = starttime
@@ -19,3 +20,4 @@ class Event:
         self.id_activity = activity
         self.id_resource = resource
         self.attributes = attributes
+        self.log = log

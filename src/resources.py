@@ -5,14 +5,16 @@ class Resources:
     
     resource_list = []      # A list of resource
     count = 0               # Incrementing counter to generate resource IDs
+    log = ""
 
-    def __init__(self) -> None:
-        resource_list = []
-        count = 0
+    def __init__(self, log) -> None:
+        self.resource_list = []
+        self.count = 0
+        self.log = log
 
     def add_resource(self, resource_name):
         self.count = self.count+1
-        new_resource = Resource(self.count, resource_name)
+        new_resource = Resource(self.count, resource_name, self.log)
         self.resource_list.append(new_resource)
 
     def get_id_if_in_list(self, name):

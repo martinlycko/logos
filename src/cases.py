@@ -5,14 +5,16 @@ class Cases:
 
     case_list = []      # A list of cases
     count = 0           # Incrementing counter to generate case IDs
+    log = ""            # A reference to the event log in which this activity can be found
 
-    def __init__(self) -> None:
-        case_list = []
-        count = 0
+    def __init__(self, log) -> None:
+        self.case_list = []
+        self.count = 0
+        self.log = log
 
     def add_case(self, id_original, attributes):
         self.count = self.count+1
-        new_case = Case(self.count, id_original, attributes)
+        new_case = Case(self.count, id_original, attributes, self.log)
         self.case_list.append(new_case)
 
     def get_id_if_in_list(self, id_original):

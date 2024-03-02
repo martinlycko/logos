@@ -15,10 +15,10 @@ class EventLog:
     resources = ""
 
     def __init__(self) -> None:
-        self.events = Events()
-        self.cases = Cases()
+        self.events = Events(self)
+        self.cases = Cases(self)
         self.activities = Activities(self)
-        self.resources = Resources()
+        self.resources = Resources(self)
 
     def add_event(self, original_event_id, original_case_id, finish_time, activity_name, resource_name):
         # Adds a single event to each list of the event log

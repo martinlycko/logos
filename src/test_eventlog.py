@@ -18,3 +18,5 @@ if __name__ == "__main__":
     print(case["path"][2].time_end)
     print(case["path"][3].time_end)
     print(case["path"][4].time_end)
+
+    print(elog.cases.case_list[1].turnaround_time())

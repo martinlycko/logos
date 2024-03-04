@@ -1,3 +1,5 @@
+from datetime import datetime
+
 class Case:
     # A class to capture a single case
 
@@ -25,9 +27,28 @@ class Case:
         for event in self.log.events.event_list:
             if event.id_case == self.id_internal:
                 case['path'].append(event)
-        
         return case
     
-    def turnaround_time(self, id_original):
-        # Returns the throughput time for a single case
-        return False
+    def turnaround_time(self):
+        # Returns the throughput time for a case
+        
+        # Get a list of all events that relate to this event
+        events = []
+        for event in self.log.events.event_list:
+            if event.id_case == self.id_internal:
+                events.append(event)
+
+        # Find the first event for this case
+        first = datetime.strptime(events[0].time_end, "%d-%m-%Y:%H.%M")
+        for event in events:
+            if first > datetime.strptime(event.time_end, "%d-%m-%Y:%H.%M"):
+                first = datetime.strptime(event.time_end, "%d-%m-%Y:%H.%M")
+
+        # Find the last event for this case
+        last = datetime.strptime(events[0].time_end, "%d-%m-%Y:%H.%M")
+        for event in events:
+            if last < datetime.strptime(event.time_end, "%d-%m-%Y:%H.%M"):
+                last = datetime.strptime(event.time_end, "%d-%m-%Y:%H.%M")
+
+        # Return the difference between the last and first event 
+        return last - first

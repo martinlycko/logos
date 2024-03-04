@@ -11,7 +11,7 @@ if __name__ == "__main__":
     assert elog.activities.count == 8
     assert elog.resources.count == 6
 
-    # To be converted into a proper test
+    # To be converted into a proper test - may not always be returned in same order, sample cases by ID
     case=elog.cases.case_list[1].case_details()
     print(case["path"][0].time_end)
     print(case["path"][1].time_end)
@@ -19,4 +19,5 @@ if __name__ == "__main__":
     print(case["path"][3].time_end)
     print(case["path"][4].time_end)
 
+    # Convert this into a test - should be 9 days 33 mins for case with internal ID 1
     print(elog.cases.case_list[1].turnaround_time())

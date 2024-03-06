@@ -1,4 +1,5 @@
 import csv
+from datetime import datetime
 
 from events import Events
 from cases import Cases
@@ -48,7 +49,7 @@ class EventLog:
         if internal_event_id[0] == False:
             self.events.add_event(original_event_id, "", finish_time, internal_case_id[1], internal_activity_id[1], internal_resource_id[1], [])
 
-    def add_events_from_CSV(self, path, column_types):
+    def add_events_from_CSV(self, path, column_types, datetime_format):
 
         # Take a path to CSV file and let the user input the type of each column
         # Column types can be event ID, case ID, resource name, actvity name, finish time,...
@@ -62,7 +63,7 @@ class EventLog:
                 if line_count == 1:
                     pass
                 else:
-                    self.add_event(row[1], row[0], row[2], row[3], row[4])
+                    self.add_event(row[1], row[0], datetime.strptime(row[2], "%d-%m-%Y:%H.%M"), row[3], row[4])
                 line_count = line_count+1
 
     def shape(self):

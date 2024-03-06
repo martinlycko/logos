@@ -39,16 +39,16 @@ class Case:
                 events.append(event)
 
         # Find the first event for this case
-        first = datetime.strptime(events[0].time_end, "%d-%m-%Y:%H.%M")
+        first = events[0].time_end
         for event in events:
-            if first > datetime.strptime(event.time_end, "%d-%m-%Y:%H.%M"):
-                first = datetime.strptime(event.time_end, "%d-%m-%Y:%H.%M")
+            if first > event.time_end:
+                first = event.time_end
 
         # Find the last event for this case
-        last = datetime.strptime(events[0].time_end, "%d-%m-%Y:%H.%M")
+        last = events[0].time_end
         for event in events:
-            if last < datetime.strptime(event.time_end, "%d-%m-%Y:%H.%M"):
-                last = datetime.strptime(event.time_end, "%d-%m-%Y:%H.%M")
+            if last < event.time_end:
+                last = event.time_end
 
         # Return the difference between the last and first event 
         return last - first

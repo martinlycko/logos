@@ -49,21 +49,43 @@ class EventLog:
         if internal_event_id[0] == False:
             self.events.add_event(original_event_id, "", finish_time, internal_case_id[1], internal_activity_id[1], internal_resource_id[1], [])
 
-    def add_events_from_CSV(self, path, column_types, datetime_format):
+    def add_events_from_CSV(self, EventLogCSV):
 
         # Take a path to CSV file and let the user input the type of each column
         # Column types can be event ID, case ID, resource name, actvity name, finish time,...
         # Iterate over the csv file row by row
         # In each row, run the add_event function matching the columns to the parameters of the add_event function using the column types
         
-        with open(path) as csv_file:
+        with open(EventLogCSV.filepath) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=';')
             line_count = 1
             for row in csv_reader:
                 if line_count == 1:
                     pass
                 else:
-                    self.add_event(row[1], row[0], datetime.strptime(row[2], "%d-%m-%Y:%H.%M"), row[3], row[4])
+                    # Collect all mandatory columns from the event log
+                    event_original_id = row[EventLogCSV.event_original_id-1]
+                    finish_time = datetime.strptime(row[EventLogCSV.finish_time-1], EventLogCSV.datetime_format)
+                    case_original_id = row[EventLogCSV.case_original_id-1]
+                    activity_name = row[EventLogCSV.activity_name-1]
+                    
+                    # If present, collect optionals with single column from event log
+                    if EventLogCSV.start_time == 0:
+                        start_time = ""
+                    else:
+                        start_time = datetime.strptime(row[EventLogCSV.start_time-1], EventLogCSV.datetime_format)
+
+                    if EventLogCSV.resource_name == 0:
+                        resource_name = ""
+                    else:
+                        resource_name = row[EventLogCSV.resource_name-1]
+
+                    # If present, collect optionals with multiple columns from event log
+                    event_attributes = ""
+                    case_attributes = ""
+                    
+                    # Add event to event log
+                    self.add_event(event_original_id, case_original_id, finish_time, activity_name, resource_name)
                 line_count = line_count+1
 
     def shape(self):

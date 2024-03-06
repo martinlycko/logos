@@ -1,11 +1,24 @@
 from event_log import EventLog
+from event_log_columns import EventLogCSV
 
 if __name__ == "__main__":
     # Test initialising a new event log
     elog = EventLog()
+
+    # Creating a new event log columns class
+    csvlog = EventLogCSV("sample_data/running-example.csv")
+    csvlog.event_original_id = 2
+    csvlog.event_attributes = 6
+    csvlog.start_time = 0
+    csvlog.finish_time = 3
+    csvlog.activity_name = 4
+    csvlog.case_original_id = 1
+    csvlog.case_attributes = 0
+    csvlog.resource_name = 5
+    csvlog.datetime_format = "%d-%m-%Y:%H.%M"
     
     # Test importing an working event log
-    elog.add_events_from_CSV("sample_data/running-example.csv", [], "%d-%m-%Y:%H.%M")
+    elog.add_events_from_CSV(csvlog)
     assert elog.events.count == 42
     assert elog.cases.count == 6
     assert elog.activities.count == 8

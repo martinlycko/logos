@@ -34,3 +34,5 @@ if __name__ == "__main__":
 
     # Convert this into a test - should be 9 days 33 mins for case with internal ID 1
     print(elog.cases.case_list[1].turnaround_time())
+
+    print(elog.cases.case_list[1])

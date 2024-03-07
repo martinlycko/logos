@@ -13,6 +13,22 @@ class Case:
         self.id_original = id_original
         self.attributes = attributes
         self.log = log
+
+    def __str__(self) -> str:
+        case_number = "Case: " + str(self.id_original) + " (internally id: " + str(self.id_internal) + ")"
+        
+        case_attributes = ""
+        if not self.attributes:
+            case_attributes = "No attributes"
+        # Need to add attributes to print
+        
+        case_path = ""
+        for event in self.log.events.event_list:
+            if event.id_case == self.id_internal:
+                case_path = case_path + str(event.time_end) + "\n"
+
+        return case_number + "\n" + case_attributes + "\n" + case_path
+
     
     def case_details(self):
         # Returns descriptions and details of a sigle case searched for using its original ID

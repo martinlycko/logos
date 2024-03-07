@@ -50,16 +50,15 @@ class EventLog:
             self.events.add_event(original_event_id, "", finish_time, internal_case_id[1], internal_activity_id[1], internal_resource_id[1], [])
 
     def add_events_from_CSV(self, EventLogCSV):
-
-        # Take a path to CSV file and let the user input the type of each column
-        # Column types can be event ID, case ID, resource name, actvity name, finish time,...
-        # Iterate over the csv file row by row
-        # In each row, run the add_event function matching the columns to the parameters of the add_event function using the column types
+        # Imports an entire CSV event file row by row using the add_event function
+        # Requires a CSV file with the additional information specified in the EventLogCSV class
         
+        # Open the CSV file with its specified path
         with open(EventLogCSV.filepath) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=';')
             line_count = 1
             for row in csv_reader:
+                # Ignore the first row commonly including hearders
                 if line_count == 1:
                     pass
                 else:
@@ -69,18 +68,19 @@ class EventLog:
                     case_original_id = row[EventLogCSV.case_original_id-1]
                     activity_name = row[EventLogCSV.activity_name-1]
                     
-                    # If present, collect optionals with single column from event log
+                    # If present in the CSV file, collect the optional start time of each events
                     if EventLogCSV.start_time == 0:
                         start_time = ""
                     else:
                         start_time = datetime.strptime(row[EventLogCSV.start_time-1], EventLogCSV.datetime_format)
 
+                    # If present in the CSV file, collect the optional resource name of each events
                     if EventLogCSV.resource_name == 0:
                         resource_name = ""
                     else:
                         resource_name = row[EventLogCSV.resource_name-1]
 
-                    # If present, collect optionals with multiple columns from event log
+                    # If present, collect optionals wth multiple columns from event log
                     event_attributes = ""
                     case_attributes = ""
                     

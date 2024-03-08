@@ -32,3 +32,6 @@ class Activities:
         for activity in self.activity_list:
             names.append(activity.name)
         return names
+    
+    def get_name(self, id):
+        return self.activity_list[id].name

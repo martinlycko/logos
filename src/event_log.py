@@ -44,7 +44,7 @@ class EventLog:
             
         # Get added IDS and add event to event list if not in there already
         internal_case_id = self.cases.get_id_if_in_list(original_case_id)
-        internal_activity_id = self.events.get_id_if_in_list(activity_name)
+        internal_activity_id = self.activities.get_id_if_in_list(activity_name)
         internal_resource_id = self.resources.get_id_if_in_list(resource_name)
         if internal_event_id[0] == False:
             self.events.add_event(original_event_id, "", finish_time, internal_case_id[1], internal_activity_id[1], internal_resource_id[1], [])

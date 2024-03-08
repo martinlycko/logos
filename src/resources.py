@@ -32,3 +32,6 @@ class Resources:
         for resource in self.resource_list:
             names.append(resource.name)
         return names
+    
+    def get_name(self, id):
+        return self.resource_list[id].name

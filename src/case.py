@@ -17,15 +17,15 @@ class Case:
         
         case_attributes = ""
         if not self.attributes:
-            case_attributes = "No attributes"
+            case_attributes = "\nNo attributes"
         # Need to add attributes to print
         
         case_path = ""
         for event in self.log.events.event_list:
             if event.id_case == self.id_internal:
-                case_path = case_path + str(event.time_end) + "\n"
+                case_path = case_path + "\n" + str(event.time_end) + ": " + self.log.activities.get_name(event.id_activity) + ", " + self.log.resources.get_name(event.id_resource)
 
-        return case_number + "\n" + case_attributes + "\n" + case_path
+        return case_number + case_attributes + case_path
 
     def case_details(self):
         # Returns descriptions and details of a sigle case searched for using its original ID

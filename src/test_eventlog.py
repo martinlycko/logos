@@ -36,7 +36,7 @@ if __name__ == "__main__":
     # print(elog.cases.case_list[1].turnaround_time())
 
     # Tests the print function of the case class
-    # print(elog.cases.case_list[1])
+    print(elog.cases.case_list[0])
 
     # Print turnarount times by case number  
     # for caseID, turnaroundtime in elog.cases.turnaround_times().items():

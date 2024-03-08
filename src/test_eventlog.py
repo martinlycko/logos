@@ -35,4 +35,14 @@ if __name__ == "__main__":
     # Convert this into a test - should be 9 days 33 mins for case with internal ID 1
     print(elog.cases.case_list[1].turnaround_time())
 
+    # Tests the print function of the case class
     print(elog.cases.case_list[1])
+
+    # Print turnarount times by case number  
+    for caseID, turnaroundtime in elog.cases.turnaround_times().items():
+        print(caseID, turnaroundtime)
+
+    # Test turnaround stats
+    print(elog.cases.case_with_min_turnaround_time())
+    print(elog.cases.case_with_max_turnaround_time())
+    print(elog.cases.avg_turnaround_time())

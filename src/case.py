@@ -1,5 +1,3 @@
-from datetime import datetime
-
 class Case:
     # A class to capture a single case
 
@@ -29,7 +27,6 @@ class Case:
 
         return case_number + "\n" + case_attributes + "\n" + case_path
 
-    
     def case_details(self):
         # Returns descriptions and details of a sigle case searched for using its original ID
         

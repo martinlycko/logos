@@ -1,4 +1,5 @@
 from case import Case
+from datetime import datetime, timedelta
 
 class Cases:
     # A class to capture all activities
@@ -26,3 +27,21 @@ class Cases:
                 result[1] = case.id_internal
                 break
         return result
+    
+    def turnaround_times(self):
+        turnaround_times = {}
+        for case in self.case_list:
+            turnaround_times[case.id_original] = case.turnaround_time()
+        return turnaround_times
+    
+    def case_with_min_turnaround_time(self):
+        turnaround_times = self.turnaround_times()
+        return min(turnaround_times.items(), key=lambda x: x[1])
+    
+    def case_with_max_turnaround_time(self):
+        turnaround_times = self.turnaround_times()
+        return max(turnaround_times.items(), key=lambda x: x[1])
+    
+    def avg_turnaround_time(self):
+        turnaround_times = self.turnaround_times()
+        return sum(turnaround_times.values(), timedelta()) / len(turnaround_times)

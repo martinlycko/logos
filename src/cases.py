@@ -28,7 +28,7 @@ class Cases:
                 break
         return result
     
-    def get_case_original_id(self, id):
+    def get_case_original_id(self, id_original):
         # Returns the case that matches the original ID
         result = [False, -1]
         for case in self.case_list:
@@ -38,11 +38,11 @@ class Cases:
                 break
         return result
 
-    def get_case_internal_id(self, id):
+    def get_case_internal_id(self, id_internal):
         # Returns the case that matches the internal ID
         result = [False, -1]
         for case in self.case_list:
-            if case.id_original == id_internal:
+            if case.id_internal == id_internal:
                 result[0] = True
                 result[1] = case
                 break

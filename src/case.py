@@ -30,13 +30,14 @@ class Case:
     def case_details(self):
         # Returns descriptions and details of a sigle case searched for using its original ID
         
-        # Create a dictionary to return 
+        # ToDo: Create a dictionary to return 
         case = {}
         case['original ID'] = self.id_original
         case['attributes'] = self.attributes
         case['path'] = []
 
         # Search the event log for events that relate to this case
+        # ToDo: Need to make sure these are sorted chronologically
         for event in self.log.events.event_list:
             if event.id_case == self.id_internal:
                 case['path'].append(event)

@@ -1,7 +1,7 @@
 from event_log import EventLog
 from event_log_columns import EventLogCSV
 
-if __name__ == "__main__":
+def test_running_example():
     # Test initialising a new event log
     elog = EventLog()
 
@@ -46,3 +46,6 @@ if __name__ == "__main__":
     # print(elog.cases.case_with_min_turnaround_time())
     # print(elog.cases.case_with_max_turnaround_time())
     # print(elog.cases.avg_turnaround_time())
+
+if __name__ == "__main__":
+    test_running_example()

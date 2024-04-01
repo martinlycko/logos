@@ -21,21 +21,3 @@ class Event:
         self.id_resource = resource
         self.attributes = attributes
         self.log = log
-
-    def __lt__(self, other):
-      return self.time_start < other.time_start
-        
-    def __le__(self, other):
-      return self.time_start <= other.time_start
-        
-    def __eq__(self, other):
-      return self.id_original == other.id_original
-        
-    def __ne__(self, other):
-      return self.time_start != other.time_start
-        
-    def __gt__(self, other):
-      return self.time_start > other.time_start
-        
-    def __ge__(self, other):
-      return self.time_start >= other.time_start

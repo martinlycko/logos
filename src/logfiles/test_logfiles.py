@@ -15,3 +15,10 @@ def test_running_example():
 
 if __name__ == "__main__":
     test_running_example()
+
+    # Tests to create:
+    # Incorrect filepaths
+    # Incorrect file extensions
+    # Column number is not a number
+    # Column number does not exist in file
+    # Column includes empty values

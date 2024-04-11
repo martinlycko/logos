@@ -1,22 +1,51 @@
-class EventLogCSV:
-    filepath = ""
-    event_original_id = 0
-    event_attributes = 0
-    start_time = 0
-    finish_time = 0
-    activity_name = 0
-    case_original_id = 0
-    case_attributes = 0
-    resource_name = 0
-    datetime_format = ""
+import os
 
-    def __init__(self, path) -> None:
-        self.filepath = path
+class EventLogCSV:
     
-    def validate(self) -> None:
-        # Initialises a new column structure for an event log csv file
-        # Event IDs, finish times, case IDs, and activity names need to be set to a single integer value
-        # Start-times and resource names are optional. Can be 0 if not in the file or a single integer with its column number
-        # Event attributes and case attributes are optional. Can be 0, single integer value, or a list of integers for more than 1 column with attributes
-        # Datetime format consitent with datetime.strptime requirements
-        return True
+    # Set when creating the event log
+    filepath = ""
+    
+    # Three parts to each element - set with specific method
+    # 1. False if not set, true if set
+    # 2. If set (1st item == true), the column number (starting with 0) that contains this information 
+    # 3. For datetime element, the format in which they are set
+    event_original_id = [False, 0]
+    event_attributes = [False, 0]
+    time_received = [False, 0, ""]
+    time_ready = [False, 0, ""]
+    time_start = [False, 0, ""]
+    time_stop = [False, 0, ""]
+    time_completed = [False, 0, ""]
+    activity_name = [False, 0]
+    case_original_id = [False, 0]
+    case_attributes = [False, 0]
+    resource_name = [False, 0]
+
+    # Sets all mandatory event log elements
+    def __init__(self, filepath, EventID_Column, CaseID_Column, CompletedTime_Column, FinishTime_Format) -> None:
+        self.set_FilePath(filepath)
+        self.set_EventID(EventID_Column)
+        self.set_CaseID_Column(CaseID_Column)
+        self.set_FinishTime_Column(CompletedTime_Column, FinishTime_Format)
+        return True # Need to check for errors and return to user if one of these failed
+
+    def set_FilePath(self, filepath):
+        # Sets the filepath and returns true if the file exists in CSV format
+        if (os.path.isfile(filepath) == True and 
+        filepath.endswith('.csv')):
+            self.filepath = filepath
+            return True
+        else:
+            return False
+            
+    def set_EventID_Column(self, ColumnNumber):
+        # Sets the EventID column if the column exists and all values in the column are non-empty
+        return 0
+    
+    def set_CaseID_Column(self, ColumnNumber):
+       # Sets the CaseID column if the column exists and all values in the column are non-empty
+        return 0
+    
+    def set_CompletedTime_Column(self, ColumnNumber, Format):
+        # Sets the FinishTime column if the column exists and all values can be converted into datetime format
+        return 0

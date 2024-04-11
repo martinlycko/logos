@@ -1,5 +1,5 @@
 from event_log import EventLog
-from event_log_columns import EventLogCSV
+from logfiles.EventLogCSV import EventLogCSV
 
 def test_running_example():
     # Test initialising a new event log

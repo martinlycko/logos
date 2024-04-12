@@ -24,19 +24,17 @@ class EventLogCSV:
     # Sets all mandatory event log elements
     def __init__(self, filepath, EventID_Column, CaseID_Column, CompletedTime_Column, FinishTime_Format) -> None:
         self.set_FilePath(filepath)
-        self.set_EventID(EventID_Column)
+        self.set_EventID_Column(EventID_Column)
         self.set_CaseID_Column(CaseID_Column)
         self.set_FinishTime_Column(CompletedTime_Column, FinishTime_Format)
-        return True # Need to check for errors and return to user if one of these failed
 
     def set_FilePath(self, filepath):
         # Sets the filepath and returns true if the file exists in CSV format
-        if (os.path.isfile(filepath) == True and 
-        filepath.endswith('.csv')):
-            self.filepath = filepath
-            return True
-        else:
-            return False
+        if os.path.isfile(filepath) == False:
+                raise FileNotFoundError('Cannot find event log in filepath')
+        if filepath.endswith('.csv') == False:
+                raise ValueError('Provided file is not a CSV file')
+        self.filepath = filepath
             
     def set_EventID_Column(self, ColumnNumber):
         # Sets the EventID column if the column exists and all values in the column are non-empty
@@ -46,6 +44,6 @@ class EventLogCSV:
        # Sets the CaseID column if the column exists and all values in the column are non-empty
         return 0
     
-    def set_CompletedTime_Column(self, ColumnNumber, Format):
+    def set_FinishTime_Column(self, ColumnNumber, Format):
         # Sets the FinishTime column if the column exists and all values can be converted into datetime format
         return 0

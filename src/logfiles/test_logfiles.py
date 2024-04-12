@@ -1,24 +1,33 @@
+import unittest
+
 from EventLogCSV import EventLogCSV
 
-def test_running_example():
-    # Creating a new event log columns class
-    csvlog = EventLogCSV("sample_data/running-example.csv")
-    csvlog.event_original_id = 2
-    csvlog.event_attributes = 6
-    csvlog.start_time = 0
-    csvlog.finish_time = 3
-    csvlog.activity_name = 4
-    csvlog.case_original_id = 1
-    csvlog.case_attributes = 0
-    csvlog.resource_name = 5
-    csvlog.datetime_format = "%d-%m-%Y:%H.%M"
+class TestCSVFilepaths(unittest.TestCase):
+
+    def test_emptyfilepath(self):
+        # Test if constructor raises an exception for empty filepath
+        with self.assertRaises(FileNotFoundError):
+            csvlog = EventLogCSV("", 1, 2, 3,"%d-%m-%Y:%H.%M")
+
+    def test_nofileatpath(self):
+        # Test if constructor raises an exception when file does not exist at provided path
+        with self.assertRaises(FileNotFoundError):
+            csvlog = EventLogCSV("sample_data/nofile.csv", 1, 2, 3,"%d-%m-%Y:%H.%M")
+
+    def test_XESfile(self):
+        # Test if constructor raises an exception when file is not a CSV
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.xes", 1, 2, 3,"%d-%m-%Y:%H.%M")
+
+    def test_TXTfile(self):
+        # Test if constructor raises an exception when file is not a CSV
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.txt", 1, 2, 3,"%d-%m-%Y:%H.%M")
 
 if __name__ == "__main__":
-    test_running_example()
+    unittest.main()
 
     # Tests to create:
-    # Incorrect filepaths
-    # Incorrect file extensions
     # Column number is not a number
     # Column number does not exist in file
     # Column includes empty values

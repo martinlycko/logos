@@ -1,9 +1,11 @@
 import os
+import csv
 
 class EventLogCSV:
     
     # Set when creating the event log
     filepath = ""
+    delimiter = ""
     
     # Three parts to each element - set with specific method
     # 1. False if not set, true if set
@@ -22,23 +24,29 @@ class EventLogCSV:
     resource_name = [False, 0]
 
     # Sets all mandatory event log elements
-    def __init__(self, filepath, EventID_Column, CaseID_Column, CompletedTime_Column, FinishTime_Format) -> None:
-        self.set_FilePath(filepath)
+    def __init__(self, filepath, delimiter, EventID_Column, CaseID_Column, CompletedTime_Column, FinishTime_Format) -> None:
+        self.set_FilePath(filepath, delimiter)
         self.set_EventID_Column(EventID_Column)
         self.set_CaseID_Column(CaseID_Column)
         self.set_FinishTime_Column(CompletedTime_Column, FinishTime_Format)
 
-    def set_FilePath(self, filepath):
-        # Sets the filepath and returns true if the file exists in CSV format
+    def set_FilePath(self, filepath, delimiter):
+        # Sets the filepath value if the file exists and is a CSV file
         if os.path.isfile(filepath) == False:
                 raise FileNotFoundError('Cannot find event log in filepath')
         if filepath.endswith('.csv') == False:
                 raise ValueError('Provided file is not a CSV file')
         self.filepath = filepath
-            
+        self.delimiter = delimiter
+
     def set_EventID_Column(self, ColumnNumber):
         # Sets the EventID column if the column exists and all values in the column are non-empty
-        return 0
+        with open(self.filepath) as csv_file:
+            csv_reader = csv.reader(csv_file, self.delimiter)
+            for row in csv_reader:
+                if first_line.count(self.delimiter) + 1 < ColumnNumber:
+                    raise ValueError('Column number does not exist')
+
     
     def set_CaseID_Column(self, ColumnNumber):
        # Sets the CaseID column if the column exists and all values in the column are non-empty

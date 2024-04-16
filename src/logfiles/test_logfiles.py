@@ -81,17 +81,18 @@ class TestGoodFiles(unittest.TestCase):
     def test_runningexample(self):
         # Test if constructor rsets the correct values for running-example.csv
         csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
-        assert csvlog.case_original_id == [True, 1]
-        assert csvlog.activity_name == [True, 4]
-        assert csvlog.time_completed == [True, 3, "%d-%m-%Y:%H.%M"]
+        assert csvlog.case_original_id.getValue() == 1
+        assert csvlog.activity_name.getValue() == 4
+        assert csvlog.time_completed.getValue() == 3
+        assert csvlog.time_completed.getFormat() == "%d-%m-%Y:%H.%M"
 
         # Double check the allocation matches the content of the event log
         with open(csvlog.filepath) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=csvlog.delimiter)
             rows = list(csv_reader)
-            assert rows[1][csvlog.case_original_id[1]-1] == "1"
-            assert rows[1][csvlog.activity_name[1]-1] == "register request"
-            assert rows[1][csvlog.time_completed[1]-1] == "30-12-2010:11.02"
+            assert rows[1][csvlog.case_original_id.getValue()-1] == "1"
+            assert rows[1][csvlog.activity_name.getValue()-1] == "register request"
+            assert rows[1][csvlog.time_completed.getValue()-1] == "30-12-2010:11.02"
 
 if __name__ == "__main__":
     unittest.main()

@@ -2,6 +2,51 @@ import os
 import csv
 from datetime import datetime
 
+class ColumnsSet:
+    isSet = False
+    Value = 0
+
+    def __init__(self):
+        self.isSet = False
+        self.Value = 0
+
+    def setValue(self, Value):
+        self.isSet = True
+        self.Value = Value
+
+    def getValue(self):
+        if self.isSet == True:
+            return self.Value
+        else:
+            raise ValueError('Column not set')
+
+class DateColumnValueSet:
+    isSet = False
+    Value = 0
+    Format = ""
+
+    def __init__(self):
+        self.isSet = False
+        self.Value = 0
+        self.Format = ""
+
+    def setValue(self, Value, Format):
+        self.isSet = True
+        self.Value = Value
+        self.Format = Format
+
+    def getValue(self):
+        if self.isSet == True:
+            return self.Value
+        else:
+            raise ValueError('Column not set')
+        
+    def getFormat(self):
+        if self.isSet == True:
+            return self.Format
+        else:
+            raise ValueError('Column not set')
+
 class EventLogCSV:
     
     # Set when creating the event log
@@ -12,17 +57,17 @@ class EventLogCSV:
     # 1. False if not set, true if set
     # 2. If set (1st item == true), the column number (starting with 1) that contains this information 
     # 3. For datetime element, the format in which they are set
-    event_original_id = [False, 0]
-    event_attributes = [False, 0]
-    time_received = [False, 0, ""]
-    time_ready = [False, 0, ""]
-    time_start = [False, 0, ""]
-    time_stop = [False, 0, ""]
-    time_completed = [False, 0, ""]
-    activity_name = [False, 0]
-    case_original_id = [False, 0]
-    case_attributes = [False, 0]
-    resource_name = [False, 0]
+    event_original_id = ColumnsSet()
+    event_attributes = ColumnsSet()
+    time_received = DateColumnValueSet()
+    time_ready = DateColumnValueSet()
+    time_start = DateColumnValueSet()
+    time_stop = DateColumnValueSet()
+    time_completed = DateColumnValueSet()
+    activity_name = ColumnsSet()
+    case_original_id = ColumnsSet()
+    case_attributes = ColumnsSet()
+    resource_name = ColumnsSet()
 
     # Sets all mandatory event log elements
     def __init__(self, filepath, delimiter, CaseID_Column, ActivityName_Column, CompletedTime_Column, CompletedTime_Format) -> None:
@@ -49,8 +94,7 @@ class EventLogCSV:
                     raise ValueError('Column number for activities does not exist')
                 if row[ColumnNumber-1] == '':
                     raise ValueError('One or more events do not have activity names')
-        self.activity_name[0] = True
-        self.activity_name[1] = ColumnNumber
+        self.activity_name.setValue(ColumnNumber)
 
     def set_CaseID_Column(self, ColumnNumber):
        # Sets the CaseID column if the column exists and all values in the column are non-empty
@@ -61,8 +105,7 @@ class EventLogCSV:
                     raise ValueError('Column number for Case IDs does not exist')
                 if row[ColumnNumber-1] == '':
                     raise ValueError('One or more events do not have Case IDs')
-        self.case_original_id[0] = True
-        self.case_original_id[1] = ColumnNumber
+        self.case_original_id.setValue(ColumnNumber)
     
     def set_CompletedTime_Column(self, ColumnNumber, Format):
         # Sets the FinishTime column if the column exists and all values can be converted into datetime format
@@ -80,18 +123,4 @@ class EventLogCSV:
                     except ValueError:
                         raise ValueError('Not all datetime values match the provided format. Issue found in line: ' + str(line))
                 line = line + 1
-        self.time_completed[0] = True
-        self.time_completed[1] = ColumnNumber
-        self.time_completed[2] = Format
-    
-    def set_EventID_Column(self, ColumnNumber):
-        # Sets the EventID column if the column exists and all values in the column are non-empty
-        with open(self.filepath) as csv_file:
-            csv_reader = csv.reader(csv_file, delimiter=self.delimiter)
-            for row in csv_reader:
-                if len(row) < ColumnNumber:
-                    raise ValueError('Column number does not exist')
-                if row[ColumnNumber-1] == '':
-                    raise ValueError('Empty EventID found')
-        self.event_original_id[0] = True
-        self.event_original_id[1] = ColumnNumber
+        self.time_completed.setValue(ColumnNumber, Format)

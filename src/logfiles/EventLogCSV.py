@@ -218,5 +218,36 @@ class EventLogCSV:
                     raise ValueError('Column number for activities does not exist')
         self.resource_name.setValue(ColumnNumber)
 
-    # def set_CaseAttributes
-    # def set_EventAttributes
+    def set_CaseAttributes_Column(self, ColumnNumbers):
+        # Sets the ResourceName columns as a list if multiple values are provided as a list
+        if isinstance(ColumnNumbers, list) == True:
+            with open(self.filepath) as csv_file:
+                csv_reader = csv.reader(csv_file, delimiter=self.delimiter)
+                for row in csv_reader:
+                    if len(row) < max(ColumnNumbers):
+                        raise ValueError('Column number for at least one case attributes does not exist')
+        # Sets the ResourceName columns as a scalar value if provided as scalar
+        else:
+            with open(self.filepath) as csv_file:
+                csv_reader = csv.reader(csv_file, delimiter=self.delimiter)
+                for row in csv_reader:
+                    if len(row) < ColumnNumbers:
+                        raise ValueError('Column number for at least one case attributes does not exist')
+        self.resource_name.setValue(ColumnNumbers)
+
+    def set_EventAttributes_Column(self, ColumnNumbers):
+        # Sets the ResourceName columns as a list if multiple values are provided as a list
+        if isinstance(ColumnNumbers, list) == True:
+            with open(self.filepath) as csv_file:
+                csv_reader = csv.reader(csv_file, delimiter=self.delimiter)
+                for row in csv_reader:
+                    if len(row) < max(ColumnNumbers):
+                        raise ValueError('Column number for at least one case attributes does not exist')
+        # Sets the ResourceName columns as a scalar value if provided as scalar
+        else:
+            with open(self.filepath) as csv_file:
+                csv_reader = csv.reader(csv_file, delimiter=self.delimiter)
+                for row in csv_reader:
+                    if len(row) < ColumnNumbers:
+                        raise ValueError('Column number for at least one case attributes does not exist')
+        self.event_attributes.setValue(ColumnNumbers)

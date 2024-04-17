@@ -126,12 +126,97 @@ class EventLogCSV:
                 line = line + 1
         self.time_completed.setValue(ColumnNumber, Format)
 
-    # def set_EventID_Column
-    # def set_TimeReceived_Column
-    # def set_TimeReady_Column
-    # def set_TimeStart_Column
-    # def set_TimeStop_Column
-    # def set_ResourceName_Column
+    def set_EventID_Column(self, ColumnNumber):
+        # Sets the EventID column if the column exists and all values in the column are non-empty
+        with open(self.filepath) as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=self.delimiter)
+            for row in csv_reader:
+                if len(row) < ColumnNumber:
+                    raise ValueError('Column number for activities does not exist')
+                if row[ColumnNumber-1] == '':
+                    raise ValueError('One or more events do not have activity names')
+        self.event_original_id.setValue(ColumnNumber)
+
+    def set_TimeReceived_Column(self, ColumnNumber, Format):
+        # Sets the TimeReceived column if the column exists and all values can be converted into datetime format
+        with open(self.filepath) as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=self.delimiter)
+            line = 1
+            for row in csv_reader:
+                if line > 1:
+                    if len(row) < ColumnNumber:
+                        raise ValueError('Column number for Completion Times does not exist')
+                    if row[ColumnNumber-1] == '':
+                        raise ValueError('One or more events do not have Finish Times')
+                    try:
+                        timestamp = datetime.strptime(row[ColumnNumber-1], Format)
+                    except ValueError:
+                        raise ValueError('Not all datetime values match the provided format. Issue found in line: ' + str(line))
+                line = line + 1
+        self.time_received.setValue(ColumnNumber, Format)
+
+    def set_TimeReady_Column(self, ColumnNumber, Format):
+        # Sets the TimeReady column if the column exists and all values can be converted into datetime format
+        with open(self.filepath) as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=self.delimiter)
+            line = 1
+            for row in csv_reader:
+                if line > 1:
+                    if len(row) < ColumnNumber:
+                        raise ValueError('Column number for Completion Times does not exist')
+                    if row[ColumnNumber-1] == '':
+                        raise ValueError('One or more events do not have Finish Times')
+                    try:
+                        timestamp = datetime.strptime(row[ColumnNumber-1], Format)
+                    except ValueError:
+                        raise ValueError('Not all datetime values match the provided format. Issue found in line: ' + str(line))
+                line = line + 1
+        self.time_ready.setValue(ColumnNumber, Format)
+
+    def set_TimeStart_Column(self, ColumnNumber, Format):
+        # Sets the TimeStart column if the column exists and all values can be converted into datetime format
+        with open(self.filepath) as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=self.delimiter)
+            line = 1
+            for row in csv_reader:
+                if line > 1:
+                    if len(row) < ColumnNumber:
+                        raise ValueError('Column number for Completion Times does not exist')
+                    if row[ColumnNumber-1] == '':
+                        raise ValueError('One or more events do not have Finish Times')
+                    try:
+                        timestamp = datetime.strptime(row[ColumnNumber-1], Format)
+                    except ValueError:
+                        raise ValueError('Not all datetime values match the provided format. Issue found in line: ' + str(line))
+                line = line + 1
+        self.time_start.setValue(ColumnNumber, Format)
+
+    def set_TimeStop_Column(self, ColumnNumber, Format):
+        # Sets the TimeStop column if the column exists and all values can be converted into datetime format
+        with open(self.filepath) as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=self.delimiter)
+            line = 1
+            for row in csv_reader:
+                if line > 1:
+                    if len(row) < ColumnNumber:
+                        raise ValueError('Column number for Completion Times does not exist')
+                    if row[ColumnNumber-1] == '':
+                        raise ValueError('One or more events do not have Finish Times')
+                    try:
+                        timestamp = datetime.strptime(row[ColumnNumber-1], Format)
+                    except ValueError:
+                        raise ValueError('Not all datetime values match the provided format. Issue found in line: ' + str(line))
+                line = line + 1
+        self.time_stop.setValue(ColumnNumber, Format)
+
+    def set_ResourceName_Column(self, ColumnNumber):
+        # Sets the ResourceName column if the column exists
+        with open(self.filepath) as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=self.delimiter)
+            for row in csv_reader:
+                if len(row) < ColumnNumber:
+                    raise ValueError('Column number for activities does not exist')
+        self.resource_name.setValue(ColumnNumber)
 
     # def set_CaseAttributes
     # def set_EventAttributes

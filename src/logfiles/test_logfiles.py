@@ -13,6 +13,30 @@ class TestGoodFiles(unittest.TestCase):
         assert csvlog.time_completed.getValue() == 3
         assert csvlog.time_completed.getFormat() == "%d-%m-%Y:%H.%M"
 
+        # Test if all optinal collums raise an error when trying to access them
+        with self.assertRaises(ValueError):
+            csvlog.event_original_id.getValue() == False
+        with self.assertRaises(ValueError):
+            csvlog.time_received.getValue() == False
+        with self.assertRaises(ValueError):
+            csvlog.time_ready.getValue() == False
+        with self.assertRaises(ValueError):
+            csvlog.time_start.getValue() == False
+        with self.assertRaises(ValueError):
+            csvlog.time_stop.getValue() == False
+        with self.assertRaises(ValueError):
+            csvlog.resource_name.getValue() == False
+        with self.assertRaises(ValueError):
+            csvlog.case_attributes.getValue() == False
+        with self.assertRaises(ValueError):
+            csvlog.event_attributes.getValue() == False
+ 
+        # Set other columns and check their allocation
+        csvlog.set_EventID_Column(2)
+        csvlog.set_ResourceName_Column(5)
+        assert csvlog.event_original_id.getValue() == 2
+        assert csvlog.resource_name.getValue() == 5
+
         # Double check the allocation matches the content of the event log
         with open(csvlog.filepath) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=csvlog.delimiter)
@@ -20,12 +44,8 @@ class TestGoodFiles(unittest.TestCase):
             assert rows[1][csvlog.case_original_id.getValue()-1] == "1"
             assert rows[1][csvlog.activity_name.getValue()-1] == "register request"
             assert rows[1][csvlog.time_completed.getValue()-1] == "30-12-2010:11.02"
-
-        # Check other columns are not yet set and trying to access them causes an error
-
-        # Set other columns and check their allocation
-
-        # Check the content of those columns
+            assert rows[1][csvlog.event_original_id.getValue()-1] == "35654423"
+            assert rows[1][csvlog.resource_name.getValue()-1] == "Pete"
 
     # same for flight_event_log
      
@@ -104,12 +124,36 @@ class TestTimeCompletionColumn(unittest.TestCase):
          with self.assertRaises(ValueError):
             csvlog = EventLogCSV("sample_data/running-example - different Timestamp.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
 
-# class TestEventIDColumn
-# class TestTimeReceivedColumn
-# class TestTimeReadyColumn
-# class TestTimeStartColumn
-# class TestTimeStopColumn
-# class TestResourceNameColumn
+class TestEventIDColumn(unittest.TestCase):
+
+    def test_ColumnNumTooHigh(self):
+        # Test if constructor raises an exception if the column number is too high
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
+            csvlog.set_EventID_Column(7)
+
+    def test_EmptyField(self):
+        # Test if the constructor raises an exception if the EventID contains empty values
+         with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example - missing EventID.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
+            csvlog.set_EventID_Column(2)
+
+# class TestTimeReceivedColumn(unittest.TestCase):
+
+# class TestTimeReadyColumn(unittest.TestCase):
+
+# class TestTimeStartColumn(unittest.TestCase):
+
+# class TestTimeStopColumn(unittest.TestCase):
+
+class TestResourceNameColumn(unittest.TestCase):
+    
+    def test_ColumnNumTooHigh(self):
+        # Test if constructor raises an exception if the column number is too high
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
+            csvlog.set_ResourceName_Column(7)
+
 # class TestCaseAttributeColumns
 # class TestEventAttributeColumns
 

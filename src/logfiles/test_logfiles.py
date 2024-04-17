@@ -3,6 +3,34 @@ import csv
 import unittest
 from EventLogCSV import EventLogCSV
 
+class TestGoodFiles(unittest.TestCase):
+    
+    def test_runningexample(self):
+        # Test if constructor rsets the correct values for running-example.csv
+        csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
+        assert csvlog.case_original_id.getValue() == 1
+        assert csvlog.activity_name.getValue() == 4
+        assert csvlog.time_completed.getValue() == 3
+        assert csvlog.time_completed.getFormat() == "%d-%m-%Y:%H.%M"
+
+        # Double check the allocation matches the content of the event log
+        with open(csvlog.filepath) as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=csvlog.delimiter)
+            rows = list(csv_reader)
+            assert rows[1][csvlog.case_original_id.getValue()-1] == "1"
+            assert rows[1][csvlog.activity_name.getValue()-1] == "register request"
+            assert rows[1][csvlog.time_completed.getValue()-1] == "30-12-2010:11.02"
+
+        # Check other columns are not yet set and trying to access them causes an error
+
+        # Set other columns and check their allocation
+
+        # Check the content of those columns
+
+    # same for flight_event_log
+     
+    # same for p2p_event_log
+
 class TestCSVFile(unittest.TestCase):
 
     def test_emptyfilepath(self):
@@ -30,7 +58,7 @@ class TestCSVFile(unittest.TestCase):
         with self.assertRaises(ValueError):
             csvlog = EventLogCSV("sample_data/running-example.txt", ",", 1, 2, 3,"%d-%m-%Y:%H.%M")
 
-class TestCSVCaseIDColumn(unittest.TestCase):
+class TestCaseIDColumn(unittest.TestCase):
     
     def test_ColumnNumTooHigh(self):
         # Test if constructor raises an exception if the column number is too high
@@ -42,7 +70,7 @@ class TestCSVCaseIDColumn(unittest.TestCase):
          with self.assertRaises(ValueError):
             csvlog = EventLogCSV("sample_data/running-example - missing CaseID.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
 
-class TestCSVActivityNameColumn(unittest.TestCase):
+class TestActivityNameColumn(unittest.TestCase):
     
     def test_ColumnNumTooHigh(self):
         # Test if constructor raises an exception if the column number is too high
@@ -54,7 +82,7 @@ class TestCSVActivityNameColumn(unittest.TestCase):
          with self.assertRaises(ValueError):
             csvlog = EventLogCSV("sample_data/running-example - missing Activity.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
 
-class TestCSVCompletionTimeColumn(unittest.TestCase):
+class TestTimeCompletionColumn(unittest.TestCase):
     
     def test_ColumnNumTooHigh(self):
         # Test if constructor raises an exception if the column number is too high
@@ -76,23 +104,14 @@ class TestCSVCompletionTimeColumn(unittest.TestCase):
          with self.assertRaises(ValueError):
             csvlog = EventLogCSV("sample_data/running-example - different Timestamp.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
 
-class TestGoodFiles(unittest.TestCase):
-    
-    def test_runningexample(self):
-        # Test if constructor rsets the correct values for running-example.csv
-        csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
-        assert csvlog.case_original_id.getValue() == 1
-        assert csvlog.activity_name.getValue() == 4
-        assert csvlog.time_completed.getValue() == 3
-        assert csvlog.time_completed.getFormat() == "%d-%m-%Y:%H.%M"
-
-        # Double check the allocation matches the content of the event log
-        with open(csvlog.filepath) as csv_file:
-            csv_reader = csv.reader(csv_file, delimiter=csvlog.delimiter)
-            rows = list(csv_reader)
-            assert rows[1][csvlog.case_original_id.getValue()-1] == "1"
-            assert rows[1][csvlog.activity_name.getValue()-1] == "register request"
-            assert rows[1][csvlog.time_completed.getValue()-1] == "30-12-2010:11.02"
+# class TestEventIDColumn
+# class TestTimeReceivedColumn
+# class TestTimeReadyColumn
+# class TestTimeStartColumn
+# class TestTimeStopColumn
+# class TestResourceNameColumn
+# class TestCaseAttributeColumns
+# class TestEventAttributeColumns
 
 if __name__ == "__main__":
     unittest.main()

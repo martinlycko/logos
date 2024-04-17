@@ -49,32 +49,33 @@ class DateColumnValueSet:
 
 class EventLogCSV:
     
-    # Set when creating the event log
+    # CSV file details
     filepath = ""
     delimiter = ""
     
-    # Three parts to each element - set with specific method
-    # 1. False if not set, true if set
-    # 2. If set (1st item == true), the column number (starting with 1) that contains this information 
-    # 3. For datetime element, the format in which they are set
+    # Mandatory columns of the event log
+    time_completed = DateColumnValueSet()
+    activity_name = ColumnsSet()
+    case_original_id = ColumnsSet()
+
+    # Optional, single-column elements of the event log
     event_original_id = ColumnsSet()
-    event_attributes = ColumnsSet()
     time_received = DateColumnValueSet()
     time_ready = DateColumnValueSet()
     time_start = DateColumnValueSet()
     time_stop = DateColumnValueSet()
-    time_completed = DateColumnValueSet()
-    activity_name = ColumnsSet()
-    case_original_id = ColumnsSet()
-    case_attributes = ColumnsSet()
     resource_name = ColumnsSet()
+
+    # Optional, single- or multi-column elements of the event log
+    case_attributes = ColumnsSet()
+    event_attributes = ColumnsSet()
 
     # Sets all mandatory event log elements
     def __init__(self, filepath, delimiter, CaseID_Column, ActivityName_Column, CompletedTime_Column, CompletedTime_Format) -> None:
         self.set_FilePath(filepath, delimiter)
         self.set_ActivityName_Column(ActivityName_Column)
         self.set_CaseID_Column(CaseID_Column)
-        self.set_CompletedTime_Column(CompletedTime_Column, CompletedTime_Format)
+        self.set_TimeCompleted_Column(CompletedTime_Column, CompletedTime_Format)
 
     def set_FilePath(self, filepath, delimiter):
         # Sets the filepath value if the file exists and is a CSV file
@@ -107,7 +108,7 @@ class EventLogCSV:
                     raise ValueError('One or more events do not have Case IDs')
         self.case_original_id.setValue(ColumnNumber)
     
-    def set_CompletedTime_Column(self, ColumnNumber, Format):
+    def set_TimeCompleted_Column(self, ColumnNumber, Format):
         # Sets the FinishTime column if the column exists and all values can be converted into datetime format
         with open(self.filepath) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=self.delimiter)
@@ -124,3 +125,13 @@ class EventLogCSV:
                         raise ValueError('Not all datetime values match the provided format. Issue found in line: ' + str(line))
                 line = line + 1
         self.time_completed.setValue(ColumnNumber, Format)
+
+    # def set_EventID_Column
+    # def set_TimeReceived_Column
+    # def set_TimeReady_Column
+    # def set_TimeStart_Column
+    # def set_TimeStop_Column
+    # def set_ResourceName_Column
+
+    # def set_CaseAttributes
+    # def set_EventAttributes

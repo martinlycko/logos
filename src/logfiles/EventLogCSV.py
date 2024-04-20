@@ -112,6 +112,20 @@ class EventLogCSV:
                 line = line + 1
         return True
 
+    def check_ColumnNumber():
+        # Need to check for provided columns numbers beign integers
+        # Need to check for provided columns numbers not being negative
+        return True
+    
+    def check_ColumnNumberSet():
+        # Need to check for provided columns numbers beign integers
+        # Need to check for provided columns numbers not being negative
+        return True
+
+    def check_ColumnAvailable():
+        # Need to check for each column only being used once
+        return True
+
     def set_FilePath(self, filepath, delimiter):
         # Sets the filepath value if the file exists and is a CSV file
         if os.path.isfile(filepath) == False:

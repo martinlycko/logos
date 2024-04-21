@@ -70,8 +70,8 @@ class EventLogCSV:
     case_attributes = ColumnsSet()
     event_attributes = ColumnsSet()
 
-    # Sets all mandatory event log elements
     def __init__(self, filepath, delimiter, CaseID_Column, ActivityName_Column, CompletedTime_Column, CompletedTime_Format) -> None:
+        # Sets all mandatory event log elements
         self.set_FilePath(filepath, delimiter)
         self.set_ActivityName_Column(ActivityName_Column)
         self.set_CaseID_Column(CaseID_Column)
@@ -122,7 +122,7 @@ class EventLogCSV:
 
     def check_ColumnAvailable(self, ColumnNumber):
         # Creates a list of all columns already being used
-        usedColumns = []
+        usedColumns = [0]
         if self.time_completed.isSet == True:
             usedColumns.append(self.time_completed.getValue())
         if self.activity_name.isSet == True:
@@ -151,12 +151,15 @@ class EventLogCSV:
                  usedColumns.extend(self.event_attributes.getValue)
             else:
                 usedColumns.append(self.event_attributes.getValue)
-        
+        print(usedColumns)
         # Error if column already used
-        if (ColumnNumber in usedColumns):
-            raise ValueError('Column already used')
-        else:
+        if len(usedColumns) == 0:
             return True
+        else:
+            if (ColumnNumber in usedColumns):
+                raise ValueError('Column already used')
+            else:
+                return True
 
     def set_FilePath(self, filepath, delimiter):
         # Sets the filepath value if the file exists and is a CSV file
@@ -177,48 +180,56 @@ class EventLogCSV:
     def set_CaseID_Column(self, ColumnNumber):
        # Sets the CaseID column if the column exists and all values in the column are non-empty
         if (self.check_ColumnNumber(ColumnNumber) == True
+        and self.check_ColumnAvailable(ColumnNumber) == True
         and self.check_NonEmptyColumn(ColumnNumber) == True):
             self.case_original_id.setValue(ColumnNumber)
     
     def set_TimeCompleted_Column(self, ColumnNumber, Format):
         # Sets the FinishTime column if the column exists and all values can be converted into datetime format
         if (self.check_ColumnNumber(ColumnNumber) == True
+        and self.check_ColumnAvailable(ColumnNumber) == True
         and self.check_DateTimeColumn(ColumnNumber, Format) == True):
             self.time_completed.setValue(ColumnNumber, Format)
 
     def set_EventID_Column(self, ColumnNumber):
         # Sets the EventID column if the column exists and all values in the column are non-empty
         if (self.check_ColumnNumber(ColumnNumber) == True
+        and self.check_ColumnAvailable(ColumnNumber) == True
         and self.check_NonEmptyColumn(ColumnNumber) == True):
             self.event_original_id.setValue(ColumnNumber)
 
     def set_TimeReceived_Column(self, ColumnNumber, Format):
         # Sets the TimeReceived column if the column exists and all values can be converted into datetime format
         if (self.check_ColumnNumber(ColumnNumber) == True
+        and self.check_ColumnAvailable(ColumnNumber) == True
         and self.check_DateTimeColumn(ColumnNumber, Format) == True):
             self.time_received.setValue(ColumnNumber, Format)
 
     def set_TimeReady_Column(self, ColumnNumber, Format):
         # Sets the TimeReady column if the column exists and all values can be converted into datetime format
         if (self.check_ColumnNumber(ColumnNumber) == True
+        and self.check_ColumnAvailable(ColumnNumber) == True
         and self.check_DateTimeColumn(ColumnNumber, Format) == True):
             self.time_ready.setValue(ColumnNumber, Format)
 
     def set_TimeStart_Column(self, ColumnNumber, Format):
         # Sets the TimeStart column if the column exists and all values can be converted into datetime format
         if (self.check_ColumnNumber(ColumnNumber) == True
+        and self.check_ColumnAvailable(ColumnNumber) == True
         and self.check_DateTimeColumn(ColumnNumber, Format) == True):
             self.time_start.setValue(ColumnNumber, Format)
 
     def set_TimeStop_Column(self, ColumnNumber, Format):
         # Sets the TimeStop column if the column exists and all values can be converted into datetime format
         if (self.check_ColumnNumber(ColumnNumber) == True
+        and self.check_ColumnAvailable(ColumnNumber) == True
         and self.check_DateTimeColumn(ColumnNumber, Format) == True):
             self.time_stop.setValue(ColumnNumber, Format)
 
     def set_ResourceName_Column(self, ColumnNumber):
         # Sets the ResourceName column if the column exists
         if (self.check_ColumnNumber(ColumnNumber) == True
+        and self.check_ColumnAvailable(ColumnNumber) == True
         and self.check_Column(ColumnNumber) == True):
             self.resource_name.setValue(ColumnNumber)
 
@@ -227,11 +238,13 @@ class EventLogCSV:
         if isinstance(ColumnNumbers, list) == True:
             for i in ColumnNumbers:
                 self.check_ColumnNumber(i)
+                self.check_ColumnAvailable(i)
                 self.check_Column(i)
             self.case_attributes.setValue(ColumnNumbers)
         # Sets the ResourceName columns as a scalar value if provided as scalar
         else:
             if (self.check_ColumnNumber(ColumnNumbers) == True
+            and self.check_ColumnAvailable(ColumnNumbers) == True
             and self.check_Column(ColumnNumbers) == True):
                 self.case_attributes.setValue(ColumnNumbers)
 
@@ -240,10 +253,12 @@ class EventLogCSV:
         if isinstance(ColumnNumbers, list) == True:
             for i in ColumnNumbers:
                 self.check_ColumnNumber(i)
+                self.check_ColumnAvailable(i)
                 self.check_Column(i)
             self.event_attributes.setValue(ColumnNumbers)
         # Sets the ResourceName columns as a scalar value if provided as scalar
         else:
             if (self.check_ColumnNumber(ColumnNumbers) == True
+            and self.check_ColumnAvailable(ColumnNumbers) == True
             and self.check_Column(ColumnNumbers) == True):
                 self.event_attributes.setValue(ColumnNumbers)

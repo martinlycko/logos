@@ -187,5 +187,5 @@ class TestEventAttributeColumns(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-    
+
     # Need to repeat the test import with two more event logs

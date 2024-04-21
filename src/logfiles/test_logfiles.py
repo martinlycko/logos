@@ -187,9 +187,5 @@ class TestEventAttributeColumns(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
-    # Need to check for provided columns numbers beign integers
-    # Need to check for provided columns numbers not being negative
-    # Need to check for each column only being used once
-
+    
     # Need to repeat the test import with two more event logs

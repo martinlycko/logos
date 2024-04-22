@@ -151,7 +151,6 @@ class EventLogCSV:
                  usedColumns.extend(self.event_attributes.getValue)
             else:
                 usedColumns.append(self.event_attributes.getValue)
-        print(usedColumns)
         # Error if column already used
         if len(usedColumns) == 0:
             return True

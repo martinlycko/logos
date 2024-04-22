@@ -3,57 +3,6 @@ import csv
 import unittest
 from EventLogCSV import EventLogCSV
 
-class TestGoodFiles(unittest.TestCase):
-    
-    def test_runningexample(self):
-        # Test if constructor rsets the correct values for running-example.csv
-        csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
-        assert csvlog.case_original_id.getValue() == 1
-        assert csvlog.activity_name.getValue() == 4
-        assert csvlog.time_completed.getValue() == 3
-        assert csvlog.time_completed.getFormat() == "%d-%m-%Y:%H.%M"
-
-        # Test if all optinal collums raise an error when trying to access them
-        with self.assertRaises(ValueError):
-            csvlog.event_original_id.getValue()
-        with self.assertRaises(ValueError):
-            csvlog.time_received.getValue()
-        with self.assertRaises(ValueError):
-            csvlog.time_ready.getValue()
-        with self.assertRaises(ValueError):
-            csvlog.time_start.getValue()
-        with self.assertRaises(ValueError):
-            csvlog.time_stop.getValue()
-        with self.assertRaises(ValueError):
-            csvlog.resource_name.getValue()
-        with self.assertRaises(ValueError):
-            csvlog.case_attributes.getValue()
-        with self.assertRaises(ValueError):
-            csvlog.event_attributes.getValue()
- 
-        # Set other columns and check their allocation
-        csvlog.set_EventID_Column(2)
-        csvlog.set_ResourceName_Column(5)
-        csvlog.set_EventAttributes_Column(6)
-        assert csvlog.event_original_id.getValue() == 2
-        assert csvlog.resource_name.getValue() == 5
-        assert csvlog.event_attributes.getValue() == 6
-
-        # Double check the allocation matches the content of the event log
-        with open(csvlog.filepath) as csv_file:
-            csv_reader = csv.reader(csv_file, delimiter=csvlog.delimiter)
-            rows = list(csv_reader)
-            assert rows[1][csvlog.case_original_id.getValue()-1] == "1"
-            assert rows[1][csvlog.activity_name.getValue()-1] == "register request"
-            assert rows[1][csvlog.time_completed.getValue()-1] == "30-12-2010:11.02"
-            assert rows[1][csvlog.event_original_id.getValue()-1] == "35654423"
-            assert rows[1][csvlog.resource_name.getValue()-1] == "Pete"
-            assert rows[1][csvlog.event_attributes.getValue()-1] == "50"
-
-    # same for flight_event_log
-     
-    # same for p2p_event_log
-
 class TestCSVFile(unittest.TestCase):
 
     def test_emptyfilepath(self):
@@ -93,6 +42,18 @@ class TestCaseIDColumn(unittest.TestCase):
          with self.assertRaises(ValueError):
             csvlog = EventLogCSV("sample_data/running-example - missing CaseID.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
 
+    def test_duplicatecolumnusage(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 1, 3,"%d-%m-%Y:%H.%M")
+
+    def test_nonIntegerColumn(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", "1", 1, 3,"%d-%m-%Y:%H.%M")
+
+    def test_nonNegativeColumn(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", -1, 1, 3,"%d-%m-%Y:%H.%M")
+
 class TestActivityNameColumn(unittest.TestCase):
     
     def test_ColumnNumTooHigh(self):
@@ -104,6 +65,18 @@ class TestActivityNameColumn(unittest.TestCase):
         # Test if the constructor raises an exception if the EventID contains empty values
          with self.assertRaises(ValueError):
             csvlog = EventLogCSV("sample_data/running-example - missing Activity.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
+
+    def test_DuplicateColumnUse(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 1, 3,"%d-%m-%Y:%H.%M")
+
+    def test_nonIntegerColumn(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, "1", 3,"%d-%m-%Y:%H.%M")
+
+    def test_nonNegativeColumn(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, -1, 3,"%d-%m-%Y:%H.%M")
 
 class TestTimeCompletionColumn(unittest.TestCase):
     
@@ -127,6 +100,18 @@ class TestTimeCompletionColumn(unittest.TestCase):
          with self.assertRaises(ValueError):
             csvlog = EventLogCSV("sample_data/running-example - different Timestamp.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
 
+    def test_DuplicateColumnUse(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 4,"%d-%m-%Y:%H.%M")
+
+    def test_nonIntegerColumn(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 1, "3","%d-%m-%Y:%H.%M")
+
+    def test_nonNegativeColumn(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 1, -3,"%d-%m-%Y:%H.%M")
+
 class TestEventIDColumn(unittest.TestCase):
 
     def test_ColumnNumTooHigh(self):
@@ -140,6 +125,21 @@ class TestEventIDColumn(unittest.TestCase):
          with self.assertRaises(ValueError):
             csvlog = EventLogCSV("sample_data/running-example - missing EventID.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
             csvlog.set_EventID_Column(2)
+
+    def test_DuplicateColumnUse(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
+            csvlog.set_EventID_Column(1)
+
+    def test_nonIntegerColumn(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
+            csvlog.set_EventID_Column("2")
+
+    def test_nonNegativeColumn(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
+            csvlog.set_EventID_Column(-2)
 
 # class TestTimeReceivedColumn(unittest.TestCase):
 
@@ -157,6 +157,21 @@ class TestResourceNameColumn(unittest.TestCase):
             csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
             csvlog.set_ResourceName_Column(7)
 
+    def test_DuplicateColumnUse(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
+            csvlog.set_ResourceName_Column(1)
+
+    def test_nonIntegerColumn(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
+            csvlog.set_ResourceName_Column("5")
+
+    def test_nonNegativeColumn(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
+            csvlog.set_ResourceName_Column(-5)
+
 class TestCaseAttributeColumns(unittest.TestCase):
     
     def test_ScalarColumnNumTooHigh(self):
@@ -170,6 +185,36 @@ class TestCaseAttributeColumns(unittest.TestCase):
         with self.assertRaises(ValueError):
             csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
             csvlog.set_CaseAttributes_Column([2, 7])
+
+    def test_DuplicateColumnUse(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
+            csvlog.set_CaseAttributes_Column(1)
+
+    def test_nonIntegerColumn(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
+            csvlog.set_CaseAttributes_Column("2")
+
+    def test_nonNegativeColumn(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
+            csvlog.set_CaseAttributes_Column(2)
+
+    def test_DuplicateColumnsUsage(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
+            csvlog.set_CaseAttributes_Column([1, 6])
+
+    def test_nonIntegerColumns(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
+            csvlog.set_CaseAttributes_Column(["1", 6])
+
+    def test_nonNegativeColumns(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
+            csvlog.set_CaseAttributes_Column([-1, 6])
 
 class TestEventAttributeColumns(unittest.TestCase):
     
@@ -185,7 +230,35 @@ class TestEventAttributeColumns(unittest.TestCase):
             csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
             csvlog.set_EventAttributes_Column([2, 7])
 
+    def test_DuplicateColumnUse(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
+            csvlog.set_EventAttributes_Column(1)
+
+    def test_nonIntegerColumn(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
+            csvlog.set_EventAttributes_Column("2")
+
+    def test_nonNegativeColumn(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
+            csvlog.set_EventAttributes_Column(2)
+
+    def test_DuplicateColumnsUsage(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
+            csvlog.set_EventAttributes_Column([1, 6])
+
+    def test_nonIntegerColumns(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
+            csvlog.set_EventAttributes_Column(["1", 6])
+
+    def test_nonNegativeColumns(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
+            csvlog.set_EventAttributes_Column([-1, 6])
+
 if __name__ == "__main__":
     unittest.main()
-
-    # Need to repeat the test import with two more event logs

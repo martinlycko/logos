@@ -50,9 +50,42 @@ class TestGoodFiles(unittest.TestCase):
             assert rows[1][csvlog.resource_name.getValue()-1] == "Pete"
             assert rows[1][csvlog.event_attributes.getValue()-1] == "50"
 
-    # same for flight_event_log
-     
-    # same for p2p_event_log
+    def test_flight_event_log(self):
+        # Requires cleaning of the event log datetime values
+        pass
+
+    def p2p_event_log(self):
+        p2pLog = EventLogCSV("sample_data/p2p_event_log.csv", ",", 1, 2, 3, "%Y-%m-%d")
+        assert p2pLog.case_original_id.getValue() == 1
+        assert p2pLog.activity_name.getValue() == 2
+        assert p2pLog.time_completed.getValue() == 3
+        assert p2pLog.time_completed.getFormat() == "%Y-%m-%d"
+
+         # Test if all optinal collums raise an error when trying to access them
+        with self.assertRaises(ValueError):
+            p2pLog.event_original_id.getValue()
+        with self.assertRaises(ValueError):
+            p2pLog.time_received.getValue()
+        with self.assertRaises(ValueError):
+            p2pLog.time_ready.getValue()
+        with self.assertRaises(ValueError):
+            p2pLog.time_start.getValue()
+        with self.assertRaises(ValueError):
+            p2pLog.time_stop.getValue()
+        with self.assertRaises(ValueError):
+            p2pLog.resource_name.getValue()
+        with self.assertRaises(ValueError):
+            p2pLog.case_attributes.getValue()
+        with self.assertRaises(ValueError):
+            p2pLog.event_attributes.getValue()
+
+        # Double check the allocation matches the content of the event log
+        with open(p2pLog.filepath) as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=p2pLog.delimiter)
+            rows = list(csv_reader)
+            assert rows[1][p2pLog.case_original_id.getValue()-1] == "1116492"
+            assert rows[1][p2pLog.activity_name.getValue()-1] == "Scan Invoice"
+            assert rows[1][p2pLog.time_completed.getValue()-1] == "2016-02-07"
 
 if __name__ == "__main__":
     unittest.main()

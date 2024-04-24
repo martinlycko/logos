@@ -100,6 +100,10 @@ class TestTimeCompletionColumn(unittest.TestCase):
          with self.assertRaises(ValueError):
             csvlog = EventLogCSV("sample_data/running-example - different Timestamp.csv", ";", 1, 4, 3,"%d-%m-%Y:%H.%M")
 
+    def test_MixedDates(self):
+        with self.assertRaises(ValueError):
+            csvlog = EventLogCSV("sample_data/flight_event_log - mixed dates.csv", ",", 1, 2, 3,"%d/%m/%Y %H:%M")
+
     def test_DuplicateColumnUse(self):
         with self.assertRaises(ValueError):
             csvlog = EventLogCSV("sample_data/running-example.csv", ";", 1, 4, 4,"%d-%m-%Y:%H.%M")

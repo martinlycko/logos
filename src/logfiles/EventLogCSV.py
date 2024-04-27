@@ -48,29 +48,29 @@ class DateColumnValueSet:
             raise ValueError('Column not set')
 
 class EventLogCSV:
-    
-    # CSV file details
-    filepath = ""
-    delimiter = ""
-    
-    # Mandatory columns of the event log
-    time_completed = DateColumnValueSet()
-    activity_name = ColumnsSet()
-    case_original_id = ColumnsSet()
-
-    # Optional, single-column elements of the event log
-    event_original_id = ColumnsSet()
-    time_received = DateColumnValueSet()
-    time_ready = DateColumnValueSet()
-    time_start = DateColumnValueSet()
-    time_stop = DateColumnValueSet()
-    resource_name = ColumnsSet()
-
-    # Optional, single- or multi-column elements of the event log
-    case_attributes = ColumnsSet()
-    event_attributes = ColumnsSet()
 
     def __init__(self, filepath, delimiter, CaseID_Column, ActivityName_Column, CompletedTime_Column, CompletedTime_Format) -> None:
+        # CSV file details
+        self.filepath = ""
+        self.delimiter = ""
+    
+        # Mandatory columns of the event log
+        self.time_completed = DateColumnValueSet()
+        self.activity_name = ColumnsSet()
+        self.case_original_id = ColumnsSet()
+
+        # Optional, single-column elements of the event log
+        self.event_original_id = ColumnsSet()
+        self.time_received = DateColumnValueSet()
+        self.time_ready = DateColumnValueSet()
+        self.time_start = DateColumnValueSet()
+        self.time_stop = DateColumnValueSet()
+        self.resource_name = ColumnsSet()
+
+        # Optional, single- or multi-column elements of the event log
+        self.case_attributes = ColumnsSet()
+        self.event_attributes = ColumnsSet()
+    
         # Sets all mandatory event log elements
         self.set_FilePath(filepath, delimiter)
         self.set_ActivityName_Column(ActivityName_Column)

@@ -51,8 +51,8 @@ class TestGoodFiles(unittest.TestCase):
             assert rows[1][csvlog.event_attributes.getValue()-1] == "50"
 
     def test_flight_event_log(self):
-        # Requires cleaning of the event log datetime values
         pass
+        # flightlog = EventLogCSV("sample_data/flight_event_log.csv", ",", 1, 2, 3, "%d/%m/%Y %H:%M")
 
     def p2p_event_log(self):
         p2pLog = EventLogCSV("sample_data/p2p_event_log.csv", ",", 1, 2, 3, "%Y-%m-%d")

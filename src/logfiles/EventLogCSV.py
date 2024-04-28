@@ -3,8 +3,6 @@ import csv
 from datetime import datetime
 
 class ColumnsSet:
-    isSet = False
-    Value = 0
 
     def __init__(self):
         self.isSet = False
@@ -21,9 +19,6 @@ class ColumnsSet:
             raise ValueError('Column not set')
 
 class DateColumnValueSet:
-    isSet = False
-    Value = 0
-    Format = ""
 
     def __init__(self):
         self.isSet = False

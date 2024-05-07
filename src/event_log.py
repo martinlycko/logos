@@ -6,10 +6,11 @@ from LogElements.cases import Cases
 from LogElements.activities import Activities
 from LogElements.resources import Resources
 
+
 class EventLog:
     # A class to capture the entire event log structure
     
-    # Each event log contains a list of events, cases, activities, and resources
+    # Each event log contains a list of events, cases, activities, resources
     events = ""
     cases = ""
     activities = ""
@@ -50,7 +51,7 @@ class EventLog:
             self.events.add_event(original_event_id, "", finish_time, internal_case_id[1], internal_activity_id[1], internal_resource_id[1], [])
 
     def add_events_from_CSV(self, EventLogCSV):
-        # Imports an entire CSV event file row by row using the add_event function
+        # Imports an entire CSV event file row by row via add_event function
         # Requires a CSV file with the additional information specified in the EventLogCSV class
         
         # Open the CSV file with its specified path

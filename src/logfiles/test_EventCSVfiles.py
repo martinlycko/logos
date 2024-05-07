@@ -127,8 +127,8 @@ class TestTimeCompletionColumn(unittest.TestCase):
         # Test if the constructor raises an exception
         # if the EventID contains empty values
         with self.assertRaises(ValueError):
-            EventLogCSV("""sample_data/running-example
-                        - different Timestamp.csv""",
+            EventLogCSV("sample_data/running-example" +
+                        " - different Timestamp.csv",
                         ";", 1, 4, 3, "%d-%m-%Y:%H.%M")
 
     def test_MixedDates(self):
@@ -166,8 +166,8 @@ class TestEventIDColumn(unittest.TestCase):
         # Test if the constructor raises an exception
         # if the EventID contains empty values
         with self.assertRaises(ValueError):
-            csvlog = EventLogCSV("""sample_data/running-example
-                                 - missing EventID.csv""",
+            csvlog = EventLogCSV("sample_data/running-example" +
+                                 " - missing EventID.csv",
                                  ";", 1, 4, 3, "%d-%m-%Y:%H.%M")
             csvlog.set_EventID_Column(2)
 

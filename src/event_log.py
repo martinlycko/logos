@@ -1,10 +1,10 @@
 import csv
 from datetime import datetime
 
-from events import Events
-from cases import Cases
-from activities import Activities
-from resources import Resources
+from LogElements.events import Events
+from LogElements.cases import Cases
+from LogElements.activities import Activities
+from LogElements.resources import Resources
 
 class EventLog:
     # A class to capture the entire event log structure

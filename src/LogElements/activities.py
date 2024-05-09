@@ -1,4 +1,4 @@
-from activity import Activity
+from LogElements.activity import Activity
 
 
 class Activities:

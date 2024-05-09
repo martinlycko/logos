@@ -1,4 +1,4 @@
-from event import Event
+from LogElements.event import Event
 
 
 class Events:

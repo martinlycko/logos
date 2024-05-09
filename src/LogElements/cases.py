@@ -1,4 +1,4 @@
-from case import Case
+from LogElements.case import Case
 from datetime import datetime, timedelta
 
 

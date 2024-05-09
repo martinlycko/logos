@@ -1,22 +1,18 @@
 from event_log import EventLog
-from logfiles.EventLogCSV import EventLogCSV
+from LogFiles.EventLogCSV import EventLogCSV
+
 
 def test_running_example():
     # Test initialising a new event log
     elog = EventLog()
 
     # Creating a new event log columns class
-    csvlog = EventLogCSV("sample_data/running-example.csv")
-    csvlog.event_original_id = 2
-    csvlog.event_attributes = 6
-    csvlog.start_time = 0
-    csvlog.finish_time = 3
-    csvlog.activity_name = 4
-    csvlog.case_original_id = 1
-    csvlog.case_attributes = 0
-    csvlog.resource_name = 5
-    csvlog.datetime_format = "%d-%m-%Y:%H.%M"
-    
+    csvlog = EventLogCSV("sample_data/running-example.csv",
+                         ";", 1, 4, 3, "%d-%m-%Y:%H.%M")
+    csvlog.set_EventID_Column(2)
+    csvlog.set_ResourceName_Column(5)
+    csvlog.set_EventAttributes_Column(6)
+
     # Test importing an working event log
     elog.add_events_from_CSV(csvlog)
     assert elog.events.count == 42
@@ -24,7 +20,8 @@ def test_running_example():
     assert elog.activities.count == 8
     assert elog.resources.count == 6
 
-    # To be converted into a proper test - may not always be returned in same order, sample cases by ID
+    # To be converted into a proper test
+    # - may not always be returned in same order, sample cases by ID
     # case=elog.cases.case_list[1].case_details()
     # print(case["path"][0].time_end)
     # print(case["path"][1].time_end)
@@ -32,13 +29,14 @@ def test_running_example():
     # print(case["path"][3].time_end)
     # print(case["path"][4].time_end)
 
-    # Convert this into a test - should be 9 days 33 mins for case with internal ID 1
+    # Convert this into a test -
+    # should be 9 days 33 mins for case with internal ID 1
     # print(elog.cases.case_list[1].turnaround_time())
 
     # Tests the print function of the case class
     print(elog.cases.case_list[0])
 
-    # Print turnarount times by case number  
+    # Print turnarount times by case number
     # for caseID, turnaroundtime in elog.cases.turnaround_times().items():
     #     print(caseID, turnaroundtime)
 
@@ -46,6 +44,7 @@ def test_running_example():
     # print(elog.cases.case_with_min_turnaround_time())
     # print(elog.cases.case_with_max_turnaround_time())
     # print(elog.cases.avg_turnaround_time())
+
 
 if __name__ == "__main__":
     test_running_example()

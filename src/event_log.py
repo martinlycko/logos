@@ -41,7 +41,7 @@ class EventLog:
         if internal_resource_id[0] is False:
             self.resources.add_resource(resource_name)
 
-        # Get added IDS and add event to event list if not in there already
+        # Get added IDs and add event to event list if not in there already
         internal_case_id = self.cases.get_id_if_in_list(original_case_id)
         internal_activity_id = self.activities.get_id_if_in_list(activity_name)
         internal_resource_id = self.resources.get_id_if_in_list(resource_name)
@@ -57,7 +57,7 @@ class EventLog:
 
         # Open the CSV file with its specified path
         with open(EventLogCSV.filepath) as csv_file:
-            csv_reader = csv.reader(csv_file, delimiter=';')
+            csv_reader = csv.reader(csv_file, delimiter=EventLogCSV.delimiter)
             line_count = 1
             for row in csv_reader:
                 # Ignore the first row commonly including hearders
@@ -65,28 +65,31 @@ class EventLog:
                     pass
                 else:
                     # Collect all mandatory columns from the event log
-                    event_original_id = row[EventLogCSV.event_original_id-1]
+                    event_original_id = row[EventLogCSV.event_original_id
+                                            .getValue()-1]
                     finish_time = datetime.strptime(
-                        row[EventLogCSV.finish_time-1],
-                        EventLogCSV.datetime_format)
-                    case_original_id = row[EventLogCSV.case_original_id-1]
-                    activity_name = row[EventLogCSV.activity_name-1]
+                        row[EventLogCSV.time_completed.getValue()-1],
+                        EventLogCSV.time_completed.getFormat())
+                    case_original_id = row[EventLogCSV.case_original_id
+                                           .getValue()-1]
+                    activity_name = row[EventLogCSV.activity_name.getValue()-1]
 
                     # If present in the CSV file,
                     # collect the optional start time of each events
-                    if EventLogCSV.start_time == 0:
+                    if EventLogCSV.time_received.isSet is False:
                         start_time = ""
                     else:
                         start_time = datetime.strptime(
-                            row[EventLogCSV.start_time-1],
-                            EventLogCSV.datetime_format)
+                            row[EventLogCSV.time_received.getValue()-1],
+                            EventLogCSV.time_received.getFormat())
 
                     # If present in the CSV file,
                     # collect the optional resource name of each events
-                    if EventLogCSV.resource_name == 0:
+                    if EventLogCSV.resource_name.isSet is False:
                         resource_name = ""
                     else:
-                        resource_name = row[EventLogCSV.resource_name-1]
+                        resource_name = row[EventLogCSV.resource_name
+                                            .getValue()-1]
 
                     # If present,
                     # collect optionals wth multiple columns from event log

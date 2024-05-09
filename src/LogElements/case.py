@@ -13,8 +13,8 @@ class Case:
         self.log = log
 
     def __str__(self) -> str:
-        case_number = "Case: " + str(self.id_original) + " (internally id: "
-        + str(self.id_internal) + ")"
+        case_number = ("Case: " + str(self.id_original) + " (internally id: "
+                       + str(self.id_internal) + ")")
 
         case_attributes = ""
         if not self.attributes:
@@ -24,9 +24,12 @@ class Case:
         case_path = ""
         for event in self.log.events.event_list:
             if event.id_case == self.id_internal:
-                case_path = case_path + "\n" + str(event.time_end) + ": "
-                + self.log.activities.get_name(event.id_activity) + ", "
-                + self.log.resources.get_name(event.id_resource)
+                case_path = (case_path + "\n"
+                             + str(event.time_end)
+                             + ": "
+                             + self.log.activities.get_name(event.id_activity)
+                             + ", "
+                             + self.log.resources.get_name(event.id_resource))
 
         return case_number + case_attributes + case_path
 

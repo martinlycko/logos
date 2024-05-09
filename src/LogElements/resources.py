@@ -1,4 +1,4 @@
-from resource_event import Resource
+from LogElements.resource_event import Resource
 
 
 class Resources:

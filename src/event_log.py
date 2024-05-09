@@ -66,16 +66,20 @@ class EventLog:
                 else:
                     # Collect all mandatory columns from the event log
                     event_original_id = row[EventLogCSV.event_original_id-1]
-                    finish_time = datetime.strptime(row[EventLogCSV.finish_time-1], EventLogCSV.datetime_format)
+                    finish_time = datetime.strptime(
+                        row[EventLogCSV.finish_time-1],
+                        EventLogCSV.datetime_format)
                     case_original_id = row[EventLogCSV.case_original_id-1]
                     activity_name = row[EventLogCSV.activity_name-1]
-                    
+
                     # If present in the CSV file,
                     # collect the optional start time of each events
                     if EventLogCSV.start_time == 0:
                         start_time = ""
                     else:
-                        start_time = datetime.strptime(row[EventLogCSV.start_time-1], EventLogCSV.datetime_format)
+                        start_time = datetime.strptime(
+                            row[EventLogCSV.start_time-1],
+                            EventLogCSV.datetime_format)
 
                     # If present in the CSV file,
                     # collect the optional resource name of each events

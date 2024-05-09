@@ -9,51 +9,52 @@ from LogElements.resources import Resources
 
 class EventLog:
     # A class to capture the entire event log structure
-    
-    # Each event log contains a list of events, cases, activities, resources
-    events = ""
-    cases = ""
-    activities = ""
-    resources = ""
 
     def __init__(self) -> None:
+        # Each event log contains a list of
+        # events, cases, activities, resources
         self.events = Events(self)
         self.cases = Cases(self)
         self.activities = Activities(self)
         self.resources = Resources(self)
 
-    def add_event(self, original_event_id, original_case_id, finish_time, activity_name, resource_name):
+    def add_event(self, original_event_id, original_case_id, finish_time,
+                  activity_name, resource_name):
         # Adds a single event to each list of the event log
 
-        # Check/get IDs of the event, case, activity, and resource already in the log
+        # Check/get IDs of the event, case, activity, and resource
+        # already in the log
         internal_event_id = self.events.get_id_if_in_list(original_event_id)
         internal_case_id = self.cases.get_id_if_in_list(original_case_id)
         internal_activity_id = self.activities.get_id_if_in_list(activity_name)
         internal_resource_id = self.resources.get_id_if_in_list(resource_name)
-     
+
         # Add case to case list if not in there already
-        if internal_case_id[0] == False:
+        if internal_case_id[0] is False:
             self.cases.add_case(original_case_id, [])
 
         # Add activity to activity list if not in there already
-        if internal_activity_id[0] == False:
+        if internal_activity_id[0] is False:
             self.activities.add_activity(activity_name)
-        
+
         # Add resource to resource list if not in there already
-        if internal_resource_id[0] == False:
+        if internal_resource_id[0] is False:
             self.resources.add_resource(resource_name)
-            
+
         # Get added IDS and add event to event list if not in there already
         internal_case_id = self.cases.get_id_if_in_list(original_case_id)
         internal_activity_id = self.activities.get_id_if_in_list(activity_name)
         internal_resource_id = self.resources.get_id_if_in_list(resource_name)
-        if internal_event_id[0] == False:
-            self.events.add_event(original_event_id, "", finish_time, internal_case_id[1], internal_activity_id[1], internal_resource_id[1], [])
+        if internal_event_id[0] is False:
+            self.events.add_event(original_event_id, "", finish_time,
+                                  internal_case_id[1], internal_activity_id[1],
+                                  internal_resource_id[1], [])
 
     def add_events_from_CSV(self, EventLogCSV):
         # Imports an entire CSV event file row by row via add_event function
-        # Requires a CSV file with the additional information specified in the EventLogCSV class
-        
+        # Requires a CSV file with the additional information
+        # specified in the EventLogCSV class
+
         # Open the CSV file with its specified path
         with open(EventLogCSV.filepath) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=';')
@@ -69,24 +70,28 @@ class EventLog:
                     case_original_id = row[EventLogCSV.case_original_id-1]
                     activity_name = row[EventLogCSV.activity_name-1]
                     
-                    # If present in the CSV file, collect the optional start time of each events
+                    # If present in the CSV file,
+                    # collect the optional start time of each events
                     if EventLogCSV.start_time == 0:
                         start_time = ""
                     else:
                         start_time = datetime.strptime(row[EventLogCSV.start_time-1], EventLogCSV.datetime_format)
 
-                    # If present in the CSV file, collect the optional resource name of each events
+                    # If present in the CSV file,
+                    # collect the optional resource name of each events
                     if EventLogCSV.resource_name == 0:
                         resource_name = ""
                     else:
                         resource_name = row[EventLogCSV.resource_name-1]
 
-                    # If present, collect optionals wth multiple columns from event log
+                    # If present,
+                    # collect optionals wth multiple columns from event log
                     event_attributes = ""
                     case_attributes = ""
-                    
+
                     # Add event to event log
-                    self.add_event(event_original_id, case_original_id, finish_time, activity_name, resource_name)
+                    self.add_event(event_original_id, case_original_id,
+                                   finish_time, activity_name, resource_name)
                 line_count = line_count+1
 
     def shape(self):

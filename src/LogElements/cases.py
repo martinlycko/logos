@@ -1,5 +1,5 @@
 from LogElements.case import Case
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 
 class Cases:

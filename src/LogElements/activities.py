@@ -19,10 +19,11 @@ class Activities:
         # found, and the second value being the ID if it has been found
         result = [False, -1]
         for activity in self.activity_list:
-            if activity.name == name:
-                result[0] = True
-                result[1] = activity.id
-                break
+            if activity.name.isSet is True:
+                if activity.name.getValue() == name:
+                    result[0] = True
+                    result[1] = activity.id
+                    break
         return result
 
     def get_names(self):
@@ -32,4 +33,4 @@ class Activities:
         return names
 
     def get_name(self, id):
-        return self.activity_list[id].name
+        return self.activity_list[id].name.getValue()

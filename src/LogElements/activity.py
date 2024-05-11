@@ -1,3 +1,6 @@
+from utils.Optional import Optional
+
+
 class Activity:
     # A class to capture a single activity
 
@@ -5,8 +8,8 @@ class Activity:
         # IDs are automatically generated, ID-1 is the position in list
         # Names are imported from the event log (e.g. "Submit Order")
         # A reference to the event log in which this activity can be found
-        self.id = id
-        self.name = name
+        self.id = Optional(id)
+        self.name = Optional(name)
         self.log = log
 
     def execution_count(self, activity_name):

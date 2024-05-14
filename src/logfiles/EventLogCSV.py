@@ -25,12 +25,12 @@ class EventLogCSV(BaseModel):
     id_case: PositiveInt
 
     # Optional, single-column elements of the event log
-    id_event: str | None = None
+    id_event: PositiveInt | None = None
     time_received: DateTimeColumn | None = None
     time_ready: DateTimeColumn | None = None
     time_start: DateTimeColumn | None = None
     time_stop: DateTimeColumn | None = None
-    id_resource: str | None = None
+    id_resource: PositiveInt | None = None
 
     # Optional, single- or multi-column elements of the event log
     attributes_case: List[PositiveInt] | None = None

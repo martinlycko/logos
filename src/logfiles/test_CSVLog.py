@@ -3,66 +3,58 @@ import csv
 import unittest
 
 # Code to test
-from EventLogCSV import EventLogCSV, DateTimeColumn
+from EventLogCSV import EventLogCSV
 
 
 class TestGoodFiles(unittest.TestCase):
 
     def test_runningexample(self):
         # Test if the EventLogCSV for runningexample.csv
-        eventlog = {
-            "filepath": "sample_data/running-example.csv",
-            "delimiter": ";",
-            "time_completed": DateTimeColumn(Column=3,
-                                             Format="%d-%m-%Y:%H.%M"),
-            "activity_name": 4,
-            "case_original_id": 3
-        }
 
-        csvlog = EventLogCSV(**eventlog)
-        assert csvlog.case_original_id.getValue() == 1
-        assert csvlog.activity_name.getValue() == 4
-        assert csvlog.time_completed.getValue() == 3
-        assert csvlog.time_completed.getFormat() == "%d-%m-%Y:%H.%M"
+        runningexample = EventLogCSV(
+            filepath="sample_data/running-example.csv",
+            delimiter=";",
+            time_completed={'Column': 3,
+                            'Format': "%d-%m-%Y:%H.%M"},
+            id_activity=4,
+            id_case=1
+        )
+
+        assert runningexample.id_case == 1
+        assert runningexample.id_activity == 4
+        assert runningexample.time_completed.Column == 3
+        assert runningexample.time_completed.Format == "%d-%m-%Y:%H.%M"
 
         # Test if all optinal collums raise an error when trying to access them
-        with self.assertRaises(ValueError):
-            csvlog.event_original_id.getValue()
-        with self.assertRaises(ValueError):
-            csvlog.time_received.getValue()
-        with self.assertRaises(ValueError):
-            csvlog.time_ready.getValue()
-        with self.assertRaises(ValueError):
-            csvlog.time_start.getValue()
-        with self.assertRaises(ValueError):
-            csvlog.time_stop.getValue()
-        with self.assertRaises(ValueError):
-            csvlog.resource_name.getValue()
-        with self.assertRaises(ValueError):
-            csvlog.case_attributes.getValue()
-        with self.assertRaises(ValueError):
-            csvlog.event_attributes.getValue()
+        assert runningexample.id_event is None
+        assert runningexample.id_resource is None
+        assert runningexample.time_received is None
+        assert runningexample.time_ready is None
+        assert runningexample.time_start is None
+        assert runningexample.time_stop is None
+        assert runningexample.attributes_case is None
+        assert runningexample.attributes_event is None
 
         # Set other columns and check their allocation
-        csvlog.set_EventID_Column(2)
-        csvlog.set_ResourceName_Column(5)
-        csvlog.set_EventAttributes_Column(6)
-        assert csvlog.event_original_id.getValue() == 2
-        assert csvlog.resource_name.getValue() == 5
-        assert csvlog.event_attributes.getValue() == 6
+        runningexample.id_event = 2
+        runningexample.id_resource = 5
+        runningexample.attributes_event = [6]
+        assert runningexample.id_event == 2
+        assert runningexample.id_resource == 5
+        assert runningexample.attributes_event == [6]
+        assert runningexample.attributes_event[0] == 6
 
         # Double check the allocation matches the content of the event log
-        with open(csvlog.filepath) as csv_file:
-            csv_reader = csv.reader(csv_file, delimiter=csvlog.delimiter)
+        with open(runningexample.filepath) as csv_file:
+            csv_reader = csv.reader(csv_file,
+                                    delimiter=runningexample.delimiter.value)
             rows = list(csv_reader)
-            assert rows[1][csvlog.case_original_id.getValue()-1] == "1"
-            assert rows[1][csvlog
-                           .activity_name.getValue()-1] == "register request"
-            assert rows[1][csvlog
-                           .time_completed.getValue()-1] == "30-12-2010:11.02"
-            assert rows[1][csvlog.event_original_id.getValue()-1] == "35654423"
-            assert rows[1][csvlog.resource_name.getValue()-1] == "Pete"
-            assert rows[1][csvlog.event_attributes.getValue()-1] == "50"
+            assert rows[1][runningexample.id_case-1] == "1"
+            assert rows[1][runningexample.id_activity-1] == "register request"
+            assert rows[1][runningexample.time_completed.Column-1] == "30-12-2010:11.02"
+            assert rows[1][runningexample.id_event-1] == "35654423"
+            assert rows[1][runningexample.id_resource-1] == "Pete"
+            assert rows[1][runningexample.attributes_event[0]-1] == "50"
 
     def test_flight_event_log(self):
         flightlog = EventLogCSV("sample_data/flight_event_log.csv",

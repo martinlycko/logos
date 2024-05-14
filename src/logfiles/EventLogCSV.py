@@ -1,6 +1,6 @@
 # For type safety and code quality
-from typing import Optional, List
-from pydantic import BaseModel, FilePath
+from typing import List
+from pydantic import BaseModel, FilePath, PositiveInt
 from enum import Enum
 
 
@@ -10,7 +10,7 @@ class Delimeter(Enum):
 
 
 class DateTimeColumn(BaseModel):
-    Column: int
+    Column: PositiveInt
     Format: str
 
 
@@ -20,18 +20,18 @@ class EventLogCSV(BaseModel):
     delimiter: Delimeter
 
     # Mandatory columns of the event log
-    time_completed = DateTimeColumn
-    activity_name = str
-    case_original_id = str
+    time_completed: DateTimeColumn
+    id_activity: PositiveInt
+    id_case: PositiveInt
 
     # Optional, single-column elements of the event log
-    event_original_id: Optional[str] = None
-    time_received: Optional[DateTimeColumn] = None
-    time_ready: Optional[DateTimeColumn] = None
-    time_start: Optional[DateTimeColumn] = None
-    time_stop: Optional[DateTimeColumn] = None
-    resource_name: Optional[str] = None
+    id_event: str | None = None
+    time_received: DateTimeColumn | None = None
+    time_ready: DateTimeColumn | None = None
+    time_start: DateTimeColumn | None = None
+    time_stop: DateTimeColumn | None = None
+    id_resource: str | None = None
 
     # Optional, single- or multi-column elements of the event log
-    case_attributes: Optional[List[int]] = None
-    event_attributes: Optional[List[int]] = None
+    attributes_case: List[PositiveInt] | None = None
+    attributes_event: List[PositiveInt] | None = None

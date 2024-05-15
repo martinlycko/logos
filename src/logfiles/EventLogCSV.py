@@ -5,11 +5,13 @@ from enum import Enum
 
 
 class Delimeter(Enum):
+    # Delimiter types supported in the CSV file
     Semicolon = ";"
     Comma = ","
 
 
 class DateTimeColumn(BaseModel):
+    # Composition of column numberand format
     Column: PositiveInt
     Format: str
 

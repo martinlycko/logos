@@ -1,25 +1,34 @@
-from utils.Optional import Optional
+# For type safety and code quality
+from pydantic import BaseModel, PositiveInt
+from typing import List
+
+# Reference to event log class
+from event_log import EventLog
 
 
-class Activity:
+class Activity(BaseModel):
     # A class to capture a single activity
+    id: PositiveInt                 # Generated, position in activities
+    name: str                       # Imported from the event log
 
-    def __init__(self, id, name, log) -> None:
-        # IDs are automatically generated, ID-1 is the position in list
-        # Names are imported from the event log (e.g. "Submit Order")
-        # A reference to the event log in which this activity can be found
-        self.id = Optional(id)
-        self.name = Optional(name)
-        self.log = log
+    # References to other event log elements
+    log: EventLog                   # Reference to the parent event log
+    events: List[PositiveInt]       # List of related event IDs
+    cases: List[PositiveInt]        # List of related case IDs
+    resources: List[PositiveInt]    # List of related resource IDs
 
-    def execution_count(self, activity_name):
+    def count_exectution(self) -> PositiveInt:
         # Returns the number of times an activity has been executed
-        return False
+        return len(self.events)
 
-    def case_count(self, activity_name):
-        # Returns the number of cases that an activity has been executed for
-        return False
+    def count_cases(self) -> PositiveInt:
+        # Returns the number of cases for which the activity was executed
+        return len(self.cases)
 
-    def average_throughput_time(self, id_external):
-        # Returns the throughput time for a single activity
-        return False
+    def count_resources(self) -> PositiveInt | None:
+        # Returns the number of resources that execute this activity
+        # Returns none if resources have not been captured in the log
+        if self.log.resources.count == 0:
+            return None
+        else:
+            return len(self.resources)

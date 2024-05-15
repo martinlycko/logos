@@ -1,16 +1,24 @@
-class Case:
+# For type safety and code quality
+from pydantic import BaseModel, PositiveInt
+from typing import List, Dict, Any
+
+# Reference to event log class
+from event_log import EventLog
+
+
+class Case(BaseModel):
     # A class to capture a single case
+    id: PositiveInt                 # Generated, position in cases
+    name: str                       # Imported from the event log
 
-    def __init__(self, id_internal, id_original, attributes, log) -> None:
-        # Internal IDs are automatically generated, ID-1 is position in list
-        # Original IDs are imported from the event log
-        # The set of attributes is imported with the event log (e.g. price)
-        # A reference to the event log in which this activity can be found
+    # The set of attributes is imported with the event log (e.g. price)
+    attributes: None | Dict[str, Any]
 
-        self.id_internal = id_internal
-        self.id_original = id_original
-        self.attributes = attributes
-        self.log = log
+    # References to other event log elements
+    log: EventLog                   # Reference to the parent event log
+    events: List[PositiveInt]       # List of related event IDs
+    activities: List[PositiveInt]   # List of related activity IDs
+    resources: List[PositiveInt]    # List of related resource IDs
 
     def __str__(self) -> str:
         case_number = ("Case: " + str(self.id_original) + " (internally id: "

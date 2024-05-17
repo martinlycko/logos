@@ -1,23 +1,28 @@
-class Event:
-    # A class to capture a single event
+# For type safety and code quality
+from pydantic import BaseModel, PositiveInt
+from datetime import datetime
 
-    def __init__(self, id_internal, id_original, starttime, endtime, case,
-                 activity, resource, attributes, log) -> None:
-        # Internal IDs are automatically generated, ID-1 is positon in list
-        # Original IDs are imported from the event log
-        # Start times may be empty or imported from the event log
-        # End times are imported from the event log
-        # Case IDs are picked up from the event log
-        # Activity IDs are picked up from the event log
-        # Resource IDs are picked up from the event log
-        # Optinal list of event related attributes (e.g. cost to process event)
-        # A reference to the event log in which this activity can be found
-        self.id_internal = id_internal
-        self.id_original = id_original
-        self.time_start = starttime
-        self.time_end = endtime
-        self.id_case = case
-        self.id_activity = activity
-        self.id_resource = resource
-        self.attributes = attributes
-        self.log = log
+# Reference to event log class
+from event_log import EventLog
+from case import Case
+from activity import Activity
+from resource_event import Resource
+
+
+class Event(BaseModel):
+    # A class to capture a single event
+    id: PositiveInt             # Generated, position in resources
+    name: str | None = None     # Imported from the event log, if present
+
+    # Timestamps of the event log
+    received: datetime          # Same as previous events completed time
+    ready: datetime | None      # Optional, when case is ready for processing
+    start: datetime | None      # Optional, manual work starting
+    stop: datetime | None       # Optional, manual work finished
+    completed: datetime         # Release time of case, sent to next activity
+
+    # References to other event log elements
+    log: EventLog               # Reference to the parent event log
+    cases: Case                 # List of related event IDs
+    activities: Activity        # List of related activity IDs
+    resources: Resource         # List of related resource IDs

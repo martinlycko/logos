@@ -1,10 +1,21 @@
-class Resource:
-    # A class to capture a single case
+# For type safety and code quality
+from pydantic import BaseModel, PositiveInt
+from typing import List
 
-    def __init__(self, id, name, log) -> None:
-        # IDs are automatically generated, ID-1 is position in the list
-        # Names are imported from the event log (e.g. employee names)
-        # A reference to the event log in which this activity can be found
-        self.id = id
-        self.name = name
-        self.log = log
+# Reference to event log class
+from event_log import EventLog
+from event import Event
+from case import Case
+from activity import Activity
+
+
+class Resource(BaseModel):
+    # A class to capture a single case
+    id: PositiveInt             # Generated, position in resources
+    name: str                   # Imported from the event log
+
+    # References to other event log elements
+    log: EventLog               # Reference to the parent event log
+    events: List[Event]         # List of related event IDs
+    cases: List[Case]           # List of related case IDs
+    activities: List[Activity]  # List of related activity IDs

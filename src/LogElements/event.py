@@ -1,6 +1,7 @@
 # For type safety and code quality
 from pydantic import BaseModel, PositiveInt
 from datetime import datetime
+from UtilsX.eventtypes import EventType
 
 # Reference to event log class
 from event_log import EventLog
@@ -15,11 +16,8 @@ class Event(BaseModel):
     name: str | None = None     # Imported from the event log, if present
 
     # Timestamps of the event log
-    received: datetime          # Same as previous events completed time
-    ready: datetime | None      # Optional, when case is ready for processing
-    start: datetime | None      # Optional, manual work starting
-    stop: datetime | None       # Optional, manual work finished
-    completed: datetime         # Release time of case, sent to next activity
+    time: datetime              # Timestamp of the event
+    stage: EventType            # Lifecycle stage of event
 
     # References to other event log elements
     log: EventLog               # Reference to the parent event log

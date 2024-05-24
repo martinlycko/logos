@@ -11,9 +11,10 @@ class Delimeter(Enum):
 
 
 class DateTimeColumn(BaseModel):
-    # Composition of column numberand format
+    # Composition of column number, format, and event type
     Column: PositiveInt
     Format: str
+    Stage: EventType
 
 
 class EventLogCSV(BaseModel):
@@ -28,10 +29,6 @@ class EventLogCSV(BaseModel):
 
     # Optional, single-column elements of the event log
     id_event: PositiveInt | None = None
-    time_received: DateTimeColumn | None = None
-    time_ready: DateTimeColumn | None = None
-    time_start: DateTimeColumn | None = None
-    time_stop: DateTimeColumn | None = None
     id_resource: PositiveInt | None = None
 
     # Optional, single- or multi-column elements of the event log

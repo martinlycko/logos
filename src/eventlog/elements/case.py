@@ -4,7 +4,7 @@ from typing import List, Dict, Any
 from datetime import timedelta
 
 # Reference to event log class
-from event_log import EventLog
+from ..event_log import EventLog
 from event import Event
 from activity import Activity
 from resource_event import Resource

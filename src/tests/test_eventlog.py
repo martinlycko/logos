@@ -1,4 +1,4 @@
-from event_log import EventLog
+from adapters.log.event_log import EventLog
 from LogFiles.EventLogCSV import EventLogCSV
 
 

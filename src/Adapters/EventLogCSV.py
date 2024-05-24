@@ -3,6 +3,8 @@ from typing import List
 from pydantic import BaseModel, FilePath, PositiveInt
 from enum import Enum
 
+from ..shared_utils.eventtypes import EventType
+
 
 class Delimeter(Enum):
     # Delimiter types supported in the CSV file

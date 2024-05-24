@@ -3,7 +3,7 @@ from pydantic import BaseModel, PositiveInt
 from typing import List
 
 # Reference to event log class
-from event_log import EventLog
+from ..event_log import EventLog
 from event import Event
 from case import Case
 from resource_event import Resource

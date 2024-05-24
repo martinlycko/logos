@@ -1,10 +1,10 @@
 # For type safety and code quality
 from pydantic import BaseModel, PositiveInt
 from datetime import datetime
-from UtilsX.eventtypes import EventType
+from shared_utils.eventtypes import EventType
 
 # Reference to event log class
-from event_log import EventLog
+from ..event_log import EventLog
 from case import Case
 from activity import Activity
 from resource_event import Resource

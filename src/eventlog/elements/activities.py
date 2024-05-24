@@ -3,8 +3,8 @@ from pydantic import BaseModel, PositiveInt
 from typing import List
 
 # Reference to other event log classes
-from LogElements.activity import Activity
-from event_log import EventLog
+from activity import Activity
+from ..event_log import EventLog
 
 
 class Activities(BaseModel):

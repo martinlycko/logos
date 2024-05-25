@@ -1,9 +1,15 @@
+# To reach to package root folder
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+print(sys.path)
+
 # From standard library
 import csv
 import unittest
 
 # Code to test
-from EventLogCSV import EventLogCSV
+from logos.adapters.EventLogCSV import EventLogCSV
 
 
 class MinimalRunningExample(unittest.TestCase):

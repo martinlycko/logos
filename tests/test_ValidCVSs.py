@@ -2,14 +2,15 @@
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-print(sys.path)
 
-# From standard library
-import csv
-import unittest
+# Workaround to make linter happy
+if True:
+    # From standard library
+    import csv
+    import unittest
 
-# Code to test
-from logos.adapters.EventLogCSV import EventLogCSV
+    # Code to test
+    from logos.adapters.EventLogCSV import EventLogCSV
 
 
 class MinimalRunningExample(unittest.TestCase):
@@ -20,7 +21,8 @@ class MinimalRunningExample(unittest.TestCase):
             filepath="sample_data/running-example.csv",
             delimiter=";",
             time_completed={'Column': 3,
-                            'Format': "%d-%m-%Y:%H.%M"},
+                            'Format': "%d-%m-%Y:%H.%M",
+                            'Stage': "Complete"},
             id_activity=4,
             id_case=1
         )
@@ -35,10 +37,6 @@ class MinimalRunningExample(unittest.TestCase):
         # Test if all optinal columns are not used
         assert self.runningexample.id_event is None
         assert self.runningexample.id_resource is None
-        assert self.runningexample.time_received is None
-        assert self.runningexample.time_ready is None
-        assert self.runningexample.time_start is None
-        assert self.runningexample.time_stop is None
         assert self.runningexample.attributes_case is None
         assert self.runningexample.attributes_event is None
 
@@ -66,7 +64,8 @@ class RunningExample(unittest.TestCase):
             filepath="sample_data/running-example.csv",
             delimiter=";",
             time_completed={'Column': 3,
-                            'Format': "%d-%m-%Y:%H.%M"},
+                            'Format': "%d-%m-%Y:%H.%M",
+                            'Stage': "Complete"},
             id_activity=4,
             id_case=1,
             id_event=2,
@@ -85,10 +84,6 @@ class RunningExample(unittest.TestCase):
         assert self.runningexample.attributes_event == [6]
 
         # Test if all optinal, unused columns are not used
-        assert self.runningexample.time_received is None
-        assert self.runningexample.time_ready is None
-        assert self.runningexample.time_start is None
-        assert self.runningexample.time_stop is None
         assert self.runningexample.attributes_case is None
 
     def test_values(self) -> None:
@@ -121,7 +116,8 @@ class FlightLog(unittest.TestCase):
             filepath="sample_data/flight_event_log.csv",
             delimiter=",",
             time_completed={'Column': 3,
-                            'Format': "%d/%m/%Y %H:%M"},
+                            'Format': "%d/%m/%Y %H:%M",
+                            'Stage': "Complete"},
             id_activity=2,
             id_case=1,
             attributes_event=[4]
@@ -138,10 +134,6 @@ class FlightLog(unittest.TestCase):
         # Test if all optinal columns are not used
         assert self.flightlog.id_event is None
         assert self.flightlog.id_resource is None
-        assert self.flightlog.time_received is None
-        assert self.flightlog.time_ready is None
-        assert self.flightlog.time_start is None
-        assert self.flightlog.time_stop is None
         assert self.flightlog.attributes_case is None
 
     def test_values(self) -> None:
@@ -170,7 +162,8 @@ class P2PLog(unittest.TestCase):
             filepath="sample_data/p2p_event_log.csv",
             delimiter=",",
             time_completed={'Column': 3,
-                            'Format': "%Y-%m-%d"},
+                            'Format': "%Y-%m-%d",
+                            'Stage': "Complete"},
             id_activity=2,
             id_case=1,
         )
@@ -185,10 +178,6 @@ class P2PLog(unittest.TestCase):
         # Test if all optinal columns are not used
         assert self.p2plog.id_event is None
         assert self.p2plog.id_resource is None
-        assert self.p2plog.time_received is None
-        assert self.p2plog.time_ready is None
-        assert self.p2plog.time_start is None
-        assert self.p2plog.time_stop is None
         assert self.p2plog.attributes_case is None
         assert self.p2plog.attributes_event is None
 

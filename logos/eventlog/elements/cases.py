@@ -1,77 +1,48 @@
-from case import Case
+# For type safety and code quality
+from pydantic import BaseModel, PositiveInt
+from typing import List
+
+# From standard library
 from datetime import timedelta
 
+# Reference to other event log classes
+from case import Case
+from ..event_log import EventLog
 
-class Cases:
+
+class Cases(BaseModel):
     # A class to capture all activities
+    caseList: List[Case]    # A list of cases
+    log: EventLog           # Reference to the parent event log
 
-    def __init__(self, log) -> None:
-        # A list of cases
-        # Incrementing counter to generate case IDs
-        # A reference to the event log in which this activity can be found
-        self.case_list = []
-        self.count = 0
-        self.log = log
+    def add_case(self, name, attributes) -> None:
+        new_case = Case(len(self.caseList+1),
+                        name, attributes)
+        self.caseList.append(new_case)
 
-    def add_case(self, id_original, attributes):
-        self.count = self.count+1
-        new_case = Case(self.count, id_original, attributes, self.log)
-        self.case_list.append(new_case)
+    def get_id(self, name) -> PositiveInt | None:
+        # Returns the ID of the activity with the given name
+        # Returns None if no activity with the name has been found
+        for case in self.caseList:
+            if case.id == name:
+                return case.id
+        return None
 
-    def get_id_if_in_list(self, id_original):
-        # Returns a result list with first value indicating if ID is found,
-        # and the second value being the ID if it has been found
-        result = [False, -1]
-        for case in self.case_list:
-            if case.id_original == id_original:
-                result[0] = True
-                result[1] = case.id_internal
-                break
-        return result
+    def get_name(self, id) -> str:
+        # Returns the name of an activity with provided ID
+        return self.caseList[id].name
 
-    def get_case_original_id(self, id_original):
-        # Returns the case that matches the original ID,
-        # a false in the tuple if the ID was not found
-        # ToDo: Function needs testing
-        result = [False, -1]
-        for case in self.case_list:
-            if case.id_original == id_original:
-                result[0] = True
-                result[1] = case
-                break
-        return result
-
-    def get_case_internal_id(self, id_internal):
-        # Returns the case that matches the internal ID,
-        # a false in the tuple if the ID was not found
-        # ToDo: Function needs testing
-        result = [False, -1]
-        for case in self.case_list:
-            if case.id_internal == id_internal:
-                result[0] = True
-                result[1] = case
-                break
-        return result
-
-    def turnaround_times(self):
-        # Returns a dictionary of case IDs and turnaround times
-        # ToDo: Test function with an list of cases
-        turnaround_times = {}
-        for case in self.case_list:
-            turnaround_times[case.id_original] = case.turnaround_time()
-        return turnaround_times
-
-    def case_with_min_turnaround_time(self):
+    def turnaround_time_min(self) -> PositiveInt:
         # Returns the case with the smallest turnaround time
         turnaround_times = self.turnaround_times()
         return min(turnaround_times.items(), key=lambda x: x[1])
 
-    def case_with_max_turnaround_time(self):
+    def turnaround_time_max(self) -> PositiveInt:
         # Returns the case with the fastest turnaround time
         turnaround_times = self.turnaround_times()
         return max(turnaround_times.items(), key=lambda x: x[1])
 
-    def avg_turnaround_time(self):
+    def turnaround_time_avg(self) -> timedelta:
         # Returns the average turnaround time of each case
         turnaround_times = self.turnaround_times()
         return (sum(turnaround_times.values(), timedelta())

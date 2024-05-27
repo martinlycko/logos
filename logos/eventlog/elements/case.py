@@ -25,6 +25,7 @@ class Case(BaseModel):
     resources: List[Resource]   # List of related resource IDs
 
     def turnaround_time(self) -> timedelta:
+        # TO BE CHECKED
         # Returns the difference between the first event's received time
         # and the last event's completed time
-        return self.events[0].completed - self.events[0].received
+        return self.events[0].time - self.events[0].received

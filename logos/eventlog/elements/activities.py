@@ -16,9 +16,9 @@ class Activities(BaseModel):
         # Adds an activity to the activity list
         new_activity = Activity(len(self.activityList+1),
                                 activity_name, self.log)
-        self.activity_list.append(new_activity)
+        self.activityList.append(new_activity)
 
-    def get_id_if_in_list(self, name) -> PositiveInt | None:
+    def get_id(self, name) -> PositiveInt | None:
         # Returns the ID of the activity with the given name
         # Returns None if no activity with the name has been found
         for activity in self.activityList:

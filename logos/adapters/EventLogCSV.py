@@ -25,7 +25,7 @@ class EventLogCSV(BaseModel):
     delimiter: Delimeter
 
     # Mandatory columns of the event log
-    time_completed: DateTimeColumn
+    time: DateTimeColumn
     id_activity: PositiveInt
     id_case: PositiveInt
 

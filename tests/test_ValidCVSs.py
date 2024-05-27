@@ -11,6 +11,7 @@ if True:
 
     # Code to test
     from logos.adapters.EventLogCSV import EventLogCSV
+    from logos.shared_utils.eventtypes import EventType
 
 
 class MinimalRunningExample(unittest.TestCase):
@@ -20,9 +21,9 @@ class MinimalRunningExample(unittest.TestCase):
         self.runningexample = EventLogCSV(
             filepath="sample_data/running-example.csv",
             delimiter=";",
-            time_completed={'Column': 3,
-                            'Format': "%d-%m-%Y:%H.%M",
-                            'Stage': "Complete"},
+            time={'Column': 3,
+                  'Format': "%d-%m-%Y:%H.%M",
+                  'Stage': EventType.complete},
             id_activity=4,
             id_case=1
         )
@@ -31,8 +32,9 @@ class MinimalRunningExample(unittest.TestCase):
         # Test if variables are appropriately set
         assert self.runningexample.id_case == 1
         assert self.runningexample.id_activity == 4
-        assert self.runningexample.time_completed.Column == 3
-        assert self.runningexample.time_completed.Format == "%d-%m-%Y:%H.%M"
+        assert self.runningexample.time.Column == 3
+        assert self.runningexample.time.Format == "%d-%m-%Y:%H.%M"
+        assert self.runningexample.time.Stage == EventType.complete
 
         # Test if all optinal columns are not used
         assert self.runningexample.id_event is None
@@ -52,7 +54,7 @@ class MinimalRunningExample(unittest.TestCase):
             assert rows[1][self.runningexample
                            .id_activity-1] == "register request"
             assert rows[1][self.runningexample
-                           .time_completed
+                           .time
                            .Column-1] == "30-12-2010:11.02"
 
 
@@ -63,9 +65,9 @@ class RunningExample(unittest.TestCase):
         self.runningexample = EventLogCSV(
             filepath="sample_data/running-example.csv",
             delimiter=";",
-            time_completed={'Column': 3,
-                            'Format': "%d-%m-%Y:%H.%M",
-                            'Stage': "Complete"},
+            time={'Column': 3,
+                  'Format': "%d-%m-%Y:%H.%M",
+                  'Stage': EventType.complete},
             id_activity=4,
             id_case=1,
             id_event=2,
@@ -77,8 +79,9 @@ class RunningExample(unittest.TestCase):
         # Test if variables are appropriately set
         assert self.runningexample.id_case == 1
         assert self.runningexample.id_activity == 4
-        assert self.runningexample.time_completed.Column == 3
-        assert self.runningexample.time_completed.Format == "%d-%m-%Y:%H.%M"
+        assert self.runningexample.time.Column == 3
+        assert self.runningexample.time.Format == "%d-%m-%Y:%H.%M"
+        assert self.runningexample.time.Stage == EventType.complete
         assert self.runningexample.id_event == 2
         assert self.runningexample.id_resource == 5
         assert self.runningexample.attributes_event == [6]
@@ -98,7 +101,7 @@ class RunningExample(unittest.TestCase):
             assert rows[1][self.runningexample
                            .id_activity-1] == "register request"
             assert rows[1][self.runningexample
-                           .time_completed
+                           .time
                            .Column-1] == "30-12-2010:11.02"
             assert rows[1][self.runningexample
                            .id_event-1] == "35654423"
@@ -115,9 +118,9 @@ class FlightLog(unittest.TestCase):
         self.flightlog = EventLogCSV(
             filepath="sample_data/flight_event_log.csv",
             delimiter=",",
-            time_completed={'Column': 3,
-                            'Format': "%d/%m/%Y %H:%M",
-                            'Stage': "Complete"},
+            time={'Column': 3,
+                  'Format': "%d/%m/%Y %H:%M",
+                  'Stage': EventType.complete},
             id_activity=2,
             id_case=1,
             attributes_event=[4]
@@ -127,8 +130,9 @@ class FlightLog(unittest.TestCase):
         # Test if variables are appropriately set
         assert self.flightlog.id_case == 1
         assert self.flightlog.id_activity == 2
-        assert self.flightlog.time_completed.Column == 3
-        assert self.flightlog.time_completed.Format == "%d/%m/%Y %H:%M"
+        assert self.flightlog.time.Column == 3
+        assert self.flightlog.time.Format == "%d/%m/%Y %H:%M"
+        assert self.flightlog.time.Stage == EventType.complete
         assert self.flightlog.attributes_event == [4]
 
         # Test if all optinal columns are not used
@@ -148,7 +152,7 @@ class FlightLog(unittest.TestCase):
             assert rows[1][self.flightlog
                            .id_activity-1] == "Check-in"
             assert rows[1][self.flightlog
-                           .time_completed
+                           .time
                            .Column-1] == "01/12/2019 12:01"
             assert rows[1][self.flightlog
                            .attributes_event[0]-1] == "Munich"
@@ -161,9 +165,9 @@ class P2PLog(unittest.TestCase):
         self.p2plog = EventLogCSV(
             filepath="sample_data/p2p_event_log.csv",
             delimiter=",",
-            time_completed={'Column': 3,
-                            'Format': "%Y-%m-%d",
-                            'Stage': "Complete"},
+            time={'Column': 3,
+                  'Format': "%Y-%m-%d",
+                  'Stage': EventType.complete},
             id_activity=2,
             id_case=1,
         )
@@ -172,8 +176,9 @@ class P2PLog(unittest.TestCase):
         # Test if variables are appropriately set
         assert self.p2plog.id_case == 1
         assert self.p2plog.id_activity == 2
-        assert self.p2plog.time_completed.Column == 3
-        assert self.p2plog.time_completed.Format == "%Y-%m-%d"
+        assert self.p2plog.time.Column == 3
+        assert self.p2plog.time.Format == "%Y-%m-%d"
+        assert self.p2plog.time.Stage == EventType.complete
 
         # Test if all optinal columns are not used
         assert self.p2plog.id_event is None
@@ -193,7 +198,7 @@ class P2PLog(unittest.TestCase):
             assert rows[1][self.p2plog
                            .id_activity-1] == "Scan Invoice"
             assert rows[1][self.p2plog
-                           .time_completed
+                           .time
                            .Column-1] == "2016-02-07"
 
 

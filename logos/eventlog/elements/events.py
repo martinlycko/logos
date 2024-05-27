@@ -1,31 +1,27 @@
-from LogElements.event import Event
+# For type safety and code quality
+from pydantic import BaseModel, PositiveInt
+from typing import List
+
+# Reference to other event log classes
+from event import Event
+from ..event_log import EventLog
 
 
-class Events:
+class Events(BaseModel):
     # A class to capture all events
+    eventList: List[Event]    # A list of events
+    log: EventLog             # Reference to the parent event log
 
-    def __init__(self, log) -> None:
-        # A list of events
-        # Incrementing counter to generate event IDs
-        # A reference to the event log in which this activity can be found
-        self.event_list = []
-        self.count = 0
-        self.log = log
-
-    def add_event(self, id_original, starttime, endtime, case,
+    def add_event(self, name, time, case,
                   activity, resource, attributes):
-        self.count = self.count+1
-        new_event = Event(self.count, id_original, starttime, endtime, case,
+        new_event = Event(len(self.activityList)+1, name, time, case,
                           activity, resource, attributes, self.log)
         self.event_list.append(new_event)
 
-    def get_id_if_in_list(self, id_original):
-        # Returns a result list with first value indicating if ID is found,
-        # and the second value being the ID if it has been found
-        result = [False, -1]
-        for event in self.event_list:
-            if event.id_original == id_original:
-                result[0] = True
-                result[1] = event.id_internal
-                break
-        return result
+    def get_id(self, name) -> PositiveInt | None:
+        # Returns the ID of the activity with the given name
+        # Returns None if no activity with the name has been found
+        for event in self.eventList:
+            if event.name == name:
+                return event.id
+        return None

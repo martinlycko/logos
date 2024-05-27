@@ -75,26 +75,12 @@ class EventLog:
                     activity_name = row[EventLogCSV.activity_name.getValue()-1]
 
                     # If present in the CSV file,
-                    # collect the optional start time of each events
-                    if EventLogCSV.time_received.isSet is False:
-                        start_time = ""
-                    else:
-                        start_time = datetime.strptime(
-                            row[EventLogCSV.time_received.getValue()-1],
-                            EventLogCSV.time_received.getFormat())
-
-                    # If present in the CSV file,
                     # collect the optional resource name of each events
                     if EventLogCSV.resource_name.isSet is False:
                         resource_name = ""
                     else:
                         resource_name = row[EventLogCSV.resource_name
                                             .getValue()-1]
-
-                    # If present,
-                    # collect optionals wth multiple columns from event log
-                    event_attributes = ""
-                    case_attributes = ""
 
                     # Add event to event log
                     self.add_event(event_original_id, case_original_id,

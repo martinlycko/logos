@@ -1,50 +1,49 @@
-from adapters.log.event_log import EventLog
-from LogFiles.EventLogCSV import EventLogCSV
+# From standard library
+import csv
+import unittest
+
+# To reach to package root folder
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
+# Workaround to make linter happy
+if True:
+    # Code to test
+    from logos.adapters.EventLogCSV import EventLogCSV
+    from logos.shared_utils.eventtypes import EventType
+    from logos.eventlog.eventlog import EventLog
 
 
-def test_running_example():
-    # Test initialising a new event log
-    elog = EventLog()
+class MinimalRunningExample(unittest.TestCase):
+    # Test if the EventLogCSV for a minimal import of runningexample.csv
 
-    # Creating a new event log columns class
-    csvlog = EventLogCSV("sample_data/running-example.csv",
-                         ";", 1, 4, 3, "%d-%m-%Y:%H.%M")
-    csvlog.set_EventID_Column(2)
-    csvlog.set_ResourceName_Column(5)
-    csvlog.set_EventAttributes_Column(6)
+    def setUp(self) -> None:
+        self.sourcefile = EventLogCSV(
+            filepath="sample_data/running-example.csv",
+            delimiter=";",
+            time={'Column': 3,
+                  'Format': "%d-%m-%Y:%H.%M",
+                  'Stage': EventType.complete},
+            id_activity=4,
+            id_case=1
+        )
+        self.eventlog = EventLog()
+        self.eventlog.add_events(self.sourcefile)
 
-    # Test importing an working event log
-    elog.add_events_from_CSV(csvlog)
-    assert elog.events.count == 42
-    assert elog.cases.count == 6
-    assert elog.activities.count == 8
-    assert elog.resources.count == 6
-
-    # To be converted into a proper test
-    # - may not always be returned in same order, sample cases by ID
-    # case=elog.cases.case_list[1].case_details()
-    # print(case["path"][0].time_end)
-    # print(case["path"][1].time_end)
-    # print(case["path"][2].time_end)
-    # print(case["path"][3].time_end)
-    # print(case["path"][4].time_end)
-
-    # Convert this into a test -
-    # should be 9 days 33 mins for case with internal ID 1
-    # print(elog.cases.case_list[1].turnaround_time())
-
-    # Tests the print function of the case class
-    print(elog.cases.case_list[0])
-
-    # Print turnarount times by case number
-    # for caseID, turnaroundtime in elog.cases.turnaround_times().items():
-    #     print(caseID, turnaroundtime)
-
-    # Test turnaround stats
-    # print(elog.cases.case_with_min_turnaround_time())
-    # print(elog.cases.case_with_max_turnaround_time())
-    # print(elog.cases.avg_turnaround_time())
+    def test_activities(self) -> None:
+        # Test all activities have been imported
+        assert self.eventlog.activities.count() == 8
+        # Check all 8 activities are in the log
+        assert "register request" in self.eventlog.activities.get_names()
+        assert "examine thoroughly" in self.eventlog.activities.get_names()
+        assert "check ticket" in self.eventlog.activities.get_names()
+        assert "decide" in self.eventlog.activities.get_names()
+        assert "reject request" in self.eventlog.activities.get_names()
+        assert "examine casually" in self.eventlog.activities.get_names()
+        assert "pay compensation" in self.eventlog.activities.get_names()
+        assert "reinitiate request" in self.eventlog.activities.get_names()
 
 
 if __name__ == "__main__":
-    test_running_example()
+    unittest.main()

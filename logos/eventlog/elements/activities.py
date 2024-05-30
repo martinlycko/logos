@@ -1,16 +1,14 @@
 # For type safety and code quality
-from pydantic import BaseModel, PositiveInt
+from pydantic import BaseModel, PositiveInt, NonNegativeInt
 from typing import List
 
 # Reference to other event log classes
-from activity import Activity
-from ..event_log import EventLog
+from .activity import Activity
 
 
 class Activities(BaseModel):
     # A class to capture all activities
-    activityList: List[Activity]    # A list of activities
-    log: EventLog                   # Reference to the parent event log
+    activityList: List[Activity] = []    # A list of activities
 
     def get_id(self, name) -> PositiveInt | None:
         # Returns the ID of the activity with the given name
@@ -24,11 +22,7 @@ class Activities(BaseModel):
         # Adds an activity to the activity list and returns its ID
         new_activity = Activity(
             id=len(self.activityList),
-            name=name,
-            log=self.log,
-            events=[],
-            cases=[],
-            resources=[],
+            name=name
         )
         self.activityList.append(new_activity)
         return new_activity.id
@@ -62,3 +56,6 @@ class Activities(BaseModel):
         for activity in self.activityList:
             names.append(activity.name)
         return names
+
+    def count(self) -> NonNegativeInt:
+        return len(self.activityList)

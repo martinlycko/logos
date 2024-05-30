@@ -1,3 +1,7 @@
+# From standard library
+import csv
+import unittest
+
 # To reach to package root folder
 import sys
 import os
@@ -5,10 +9,6 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 # Workaround to make linter happy
 if True:
-    # From standard library
-    import csv
-    import unittest
-
     # Code to test
     from logos.adapters.EventLogCSV import EventLogCSV
     from logos.shared_utils.eventtypes import EventType

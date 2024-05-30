@@ -1,28 +1,14 @@
 # For type safety and code quality
-from pydantic import BaseModel, PositiveInt
-from typing import List, Dict, Any
-from datetime import timedelta
+from pydantic import BaseModel, NonNegativeInt
 
-# Reference to event log class
-from ..event_log import EventLog
-from event import Event
-from activity import Activity
-from resource_event import Resource
+# From standard library
+from datetime import timedelta
 
 
 class Case(BaseModel):
     # A class to capture a single case
-    id: PositiveInt             # Generated, position in cases
+    id: NonNegativeInt             # Generated, position in cases
     name: str                   # Imported from the event log
-
-    # The set of attributes is imported with the event log (e.g. price)
-    attributes: None | Dict[str, Any]
-
-    # References to other event log elements
-    log: EventLog               # Reference to the parent event log
-    events: List[Event]         # List of related event IDs
-    activities: List[Activity]  # List of related activity IDs
-    resources: List[Resource]   # List of related resource IDs
 
     def turnaround_time(self) -> timedelta:
         # TO BE CHECKED

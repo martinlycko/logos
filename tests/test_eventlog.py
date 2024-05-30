@@ -1,5 +1,4 @@
 # From standard library
-import csv
 import unittest
 
 # To reach to package root folder
@@ -31,10 +30,10 @@ class MinimalRunningExample(unittest.TestCase):
         self.eventlog = EventLog()
         self.eventlog.add_events(self.sourcefile)
 
-    def test_activities(self) -> None:
-        # Test all activities have been imported
+    def test_activities_add(self) -> None:
+        # Tests that 8 activities have been imported
         assert self.eventlog.activities.count() == 8
-        # Check all 8 activities are in the log
+        # Checks all 8 activities are in the log by name
         assert "register request" in self.eventlog.activities.get_names()
         assert "examine thoroughly" in self.eventlog.activities.get_names()
         assert "check ticket" in self.eventlog.activities.get_names()
@@ -43,6 +42,17 @@ class MinimalRunningExample(unittest.TestCase):
         assert "examine casually" in self.eventlog.activities.get_names()
         assert "pay compensation" in self.eventlog.activities.get_names()
         assert "reinitiate request" in self.eventlog.activities.get_names()
+
+    def test_cases_add(self) -> None:
+        # Tests that 6 cases have been imported
+        assert self.eventlog.cases.count() == 6
+        # Checks all 8 activities are in the log by name
+        assert "1" in self.eventlog.cases.get_names()
+        assert "2" in self.eventlog.cases.get_names()
+        assert "3" in self.eventlog.cases.get_names()
+        assert "4" in self.eventlog.cases.get_names()
+        assert "5" in self.eventlog.cases.get_names()
+        assert "6" in self.eventlog.cases.get_names()
 
 
 if __name__ == "__main__":

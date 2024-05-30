@@ -8,6 +8,7 @@ from datetime import datetime
 
 # Reference to other event log classes
 from logos.eventlog.elements.activities import Activities
+from logos.eventlog.elements.cases import Cases
 
 # Import of supported adapter classes for source logs
 from logos.adapters.EventLogCSV import EventLogCSV
@@ -15,7 +16,8 @@ from logos.adapters.EventLogCSV import EventLogCSV
 
 class EventLog(BaseModel):
     # A class to capture the entire event log structure
-    activities: Activities = Activities()  # Contains a list of all activities
+    activities: Activities = Activities()   # Contains a list of all activities
+    cases: Cases = Cases()                  # Contains a list of all cases
 
     def add_events(self, sourcelog) -> None:
         # Imports event logs parsed through the adapter classes
@@ -33,14 +35,16 @@ class EventLog(BaseModel):
                     else:
                         # Collect all mandatory columns from the event log
                         activityName = row[sourcelog.id_activity-1]
+                        caseName = row[sourcelog.id_case-1]
 
                         # Add event to event log
-                        self.add_event(activityName)
+                        self.add_event(activityName, caseName)
                     line_count = line_count+1
 
-    def add_event(self, activityName) -> None:
+    def add_event(self, activityName, caseName) -> None:
         # Adds a single event to each list of the event log
 
         # Check/get IDs of the event, case, activity, and resource
         # already in the log
-        self.activities.get_id_or_add(activityName)
+        activityID = self.activities.get_id_or_add(activityName)
+        caseID = self.cases.get_id_or_add(caseName)

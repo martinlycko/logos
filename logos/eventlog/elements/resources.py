@@ -1,29 +1,48 @@
 # For type safety and code quality
-from pydantic import BaseModel, PositiveInt
+from pydantic import BaseModel, NonNegativeInt
 from typing import List
 
 # Reference to other event log classes
-from resource_event import Resource
-from ..event_log import EventLog
+from .resource_event import Resource
 
 
 class Resources(BaseModel):
     # A class to capture all resources
-    resoruceList: List[Resource]    # A list of resources
-    log: EventLog                   # Reference to the parent event log
+    resourceList: List[Resource] = []    # A list of resources
 
-    def add_resource(self, resource_name) -> None:
-        new_resource = Resource(len(self.resoruceList)+1,
-                                resource_name, self.log)
-        self.resource_list.append(new_resource)
-
-    def get_id(self, name) -> PositiveInt | None:
-        # Returns the ID of the activity with the given name
-        # Returns None if no activity with the name has been found
-        for case in self.resoruceList:
-            if case.id == name:
-                return case.id
+    def get_id(self, name) -> NonNegativeInt | None:
+        # Returns the ID of the resource with the given name
+        # Returns None if no resource with the name has been found
+        for resource in self.resourceList:
+            if resource.name == name:
+                return resource.id
         return None
 
-    def get_name(self, id) -> str:
-        return self.resource_list[id].name
+    def add_resource(self, name) -> NonNegativeInt:
+        # Adds a resource to the resource list and returns its ID
+        new_resource = Resource(
+            id=len(self.resourceList),
+            name=name
+        )
+        self.resourceList.append(new_resource)
+        return new_resource.id
+
+    def get_id_or_add(self, name) -> NonNegativeInt:
+        # Checks if the resource is already in the list using its name
+        ID = self.get_id(name)
+        if ID is None:
+            # Adds the resource and returns the newly created ID
+            return self.add_resource(name)
+        else:
+            # Returns the ID of the existing resource in the list
+            return ID
+
+    def count(self) -> NonNegativeInt:
+        return len(self.resourceList)
+
+    def get_names(self) -> List[str]:
+        # Returns a list containing all resource names
+        names: List[str] = []
+        for resource in self.resourceList:
+            names.append(resource.name)
+        return names

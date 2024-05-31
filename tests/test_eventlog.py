@@ -30,6 +30,14 @@ class MinimalRunningExample(unittest.TestCase):
         self.eventlog = EventLog()
         self.eventlog.add_events(self.sourcefile)
 
+    def test_events_add(self) -> None:
+        # Tests that 42 events have been imported
+        assert self.eventlog.events.count() == 42
+        # Check that names have not been imported
+        assert self.eventlog.events.eventList[0].name is None
+        assert self.eventlog.events.eventList[41].name is None
+        
+
     def test_activities_add(self) -> None:
         # Tests that 8 activities have been imported
         assert self.eventlog.activities.count() == 8
@@ -77,6 +85,14 @@ class RunningExample(unittest.TestCase):
         )
         self.eventlog = EventLog()
         self.eventlog.add_events(self.sourcefile)
+
+    def test_events_add(self) -> None:
+        # Tests that 42 events have been imported
+        assert self.eventlog.events.count() == 42
+        # Check some of the names have been imported
+        assert "35654423" in self.eventlog.events.get_names()
+        assert "35654718" in self.eventlog.events.get_names()
+        assert "35654877" in self.eventlog.events.get_names()
 
     def test_activities_add(self) -> None:
         # Tests that 8 activities have been imported

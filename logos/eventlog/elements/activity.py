@@ -1,11 +1,25 @@
 # For type safety and code quality
 from pydantic import BaseModel, PositiveInt, NonNegativeInt
+from typing import List
 
 
 class Activity(BaseModel):
     # A class to capture a single activity
-    id: NonNegativeInt             # Generated, position in activities
-    name: str                   # Imported from the event log
+    id: NonNegativeInt  # Generated, position in activities
+    name: str           # Imported from the event log
+
+    # References to other elements in the model
+    events: List[NonNegativeInt] = []       # List of related event IDs
+    cases: List[NonNegativeInt] = []        # List of related case IDs
+    resources: List[NonNegativeInt] = []    # List of related resource IDs
+
+    def enrich(self, eventID, caseID, resourceID) -> None:
+        self.events.append(eventID)
+        if caseID in self.cases is False:
+            self.cases.append(caseID)
+        if (resourceID in self.resources is False
+                and resourceID is not None):
+            self.cases.append(resourceID)
 
     def count_exectution(self) -> PositiveInt:
         # Returns the number of times an activity has been executed

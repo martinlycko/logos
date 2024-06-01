@@ -36,7 +36,6 @@ class MinimalRunningExample(unittest.TestCase):
         # Check that names have not been imported
         assert self.eventlog.events.eventList[0].name is None
         assert self.eventlog.events.eventList[41].name is None
-        
 
     def test_activities_add(self) -> None:
         # Tests that 8 activities have been imported
@@ -93,6 +92,7 @@ class RunningExample(unittest.TestCase):
         assert "35654423" in self.eventlog.events.get_names()
         assert "35654718" in self.eventlog.events.get_names()
         assert "35654877" in self.eventlog.events.get_names()
+        print(self.eventlog.activities.activityList[0].events)
 
     def test_activities_add(self) -> None:
         # Tests that 8 activities have been imported

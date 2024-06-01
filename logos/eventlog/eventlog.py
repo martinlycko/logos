@@ -72,5 +72,8 @@ class EventLog(BaseModel):
         eventID = self.events.add_event(eventName, time, stage)
 
         # Get IDs or add optional elements
+        resourceID = None
         if resourceName is not None:
             resourceID = self.resources.get_id_or_add(resourceName)
+
+        self.activities.activityList[activityID].enrich(eventID, caseID, resourceID)

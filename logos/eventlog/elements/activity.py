@@ -15,11 +15,11 @@ class Activity(BaseModel):
 
     def enrich(self, eventID, caseID, resourceID) -> None:
         self.events.append(eventID)
-        if caseID in self.cases is False:
+        if caseID not in self.cases:
             self.cases.append(caseID)
-        if (resourceID in self.resources is False
-                and resourceID is not None):
-            self.cases.append(resourceID)
+        if (resourceID is not None
+                and resourceID not in self.resources):
+            self.resources.append(resourceID)
 
     def count_exectution(self) -> PositiveInt:
         # Returns the number of times an activity has been executed

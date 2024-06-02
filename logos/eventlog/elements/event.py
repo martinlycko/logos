@@ -16,3 +16,13 @@ class Event(BaseModel):
     # Timestamps of the event log
     time: datetime              # Timestamp of the event
     stage: EventType            # Lifecycle stage of event
+
+    # References to other modules
+    activity: NonNegativeInt | None = None      # Related activity ID
+    case: NonNegativeInt | None = None          # Related case ID
+    resource:  NonNegativeInt | None = None     # Related resource ID
+
+    def enrich(self, caseID, activityID, resourceID) -> None:
+        self.case = caseID
+        self.resource = resourceID
+        self.activity = activityID

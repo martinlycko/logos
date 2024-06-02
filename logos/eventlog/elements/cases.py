@@ -35,7 +35,8 @@ class Cases(BaseModel):
         ID = self.get_id(name)
         if ID is None:
             # Adds the case and returns the newly created ID
-            return self.add_case(name)
+            ID = self.add_case(name)
+            return ID
         else:
             # Returns the ID of the existing case in the list
             return ID

@@ -32,7 +32,8 @@ class Activities(BaseModel):
         ID = self.get_id(name)
         if ID is None:
             # Adds the activity and returns the newly created ID
-            return self.add_activity(name)
+            ID = self.add_activity(name)
+            return ID
         else:
             # Returns the ID of the existing activity in the list
             return ID

@@ -1,6 +1,5 @@
 # For type safety and code quality
-from pydantic import BaseModel, PositiveInt
-from typing import List
+from pydantic import BaseModel
 
 # From standard library
 import csv
@@ -76,4 +75,17 @@ class EventLog(BaseModel):
         if resourceName is not None:
             resourceID = self.resources.get_id_or_add(resourceName)
 
-        self.activities.activityList[activityID].enrich(eventID, caseID, resourceID)
+        # Add related IDs to activities, events, resources, and cases
+        self.activities.activityList[activityID].enrich(eventID,
+                                                        caseID,
+                                                        resourceID)
+        self.cases.caseList[caseID].enrich(eventID,
+                                           activityID,
+                                           resourceID)
+        if resourceID is not None:
+            self.resources.resourceList[resourceID].enrich(eventID,
+                                                           activityID,
+                                                           caseID)
+        self.events.eventList[eventID].enrich(caseID,
+                                              activityID,
+                                              resourceID)

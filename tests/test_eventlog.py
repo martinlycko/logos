@@ -96,14 +96,11 @@ class RunningExample(unittest.TestCase):
         self.event35654423ID = self.eventlog.events.get_id("35654423")
         self.event = self.eventlog.events.eventList[self.event35654423ID]
         # Check that case has been set correctly
-        caseName = self.eventlog.cases.caseList[self.event.case].name
-        assert caseName == "1"
+        assert self.event.case.name == "1"
         # check that activities has been set correctly
-        caseName = self.eventlog.activities.activityList[self.event.activity].name
-        assert caseName == "register request"
+        assert self.event.activity.name == "register request"
         # Check that resource has been set correctly
-        caseName = self.eventlog.resources.resourceList[self.event.resource].name
-        assert caseName == "Pete"
+        assert self.event.resource.name == "Pete"
 
     def test_activities_add(self) -> None:
         # Tests that 8 activities have been imported
@@ -119,15 +116,17 @@ class RunningExample(unittest.TestCase):
         assert "reinitiate request" in self.eventlog.activities.get_names()
         # Checks that events for resources have been set correctly
         self.activityDecideID = self.eventlog.activities.get_id("decide")
+        self.activityDecide = self.eventlog.activities.activityList[self.activityDecideID]
         self.activityRegisterID = self.eventlog.activities.get_id("register request")
-        assert len(self.eventlog.activities.activityList[self.activityDecideID].events) == 9
-        assert len(self.eventlog.activities.activityList[self.activityRegisterID].events) == 6
+        self.activityRegister = self.eventlog.activities.activityList[self.activityRegisterID]
+        assert len(self.activityDecide.events) == 9
+        assert len(self.activityRegister.events) == 6
         # Checks that cases have been set correctly
-        assert len(self.eventlog.activities.activityList[self.activityDecideID].cases) == 6
-        assert len(self.eventlog.activities.activityList[self.activityRegisterID].cases) == 6
+        assert len(self.activityDecide.cases) == 6
+        assert len(self.activityRegister.cases) == 6
         # Checks that resources have been set correctly
-        assert len(self.eventlog.activities.activityList[self.activityDecideID].resources) == 1
-        assert len(self.eventlog.activities.activityList[self.activityRegisterID].resources) == 3
+        assert len(self.activityDecide.resources) == 1
+        assert len(self.activityRegister.resources) == 3
 
     def test_cases_add(self) -> None:
         # Tests that 6 cases have been imported
@@ -141,15 +140,17 @@ class RunningExample(unittest.TestCase):
         assert "6" in self.eventlog.cases.get_names()
         # Checks that events for cases have been set correctly
         self.case1ID = self.eventlog.cases.get_id("1")
+        self.case1 = self.eventlog.cases.caseList[self.case1ID]
         self.case3ID = self.eventlog.cases.get_id("3")
-        assert len(self.eventlog.cases.caseList[self.case1ID].events) == 5
-        assert len(self.eventlog.cases.caseList[self.case3ID].events) == 9
+        self.case3 = self.eventlog.cases.caseList[self.case3ID]
+        assert len(self.case1.events) == 5
+        assert len(self.case3.events) == 9
         # Checks that activities have been set correctly
-        assert len(self.eventlog.cases.caseList[self.case1ID].activities) == 5
-        assert len(self.eventlog.cases.caseList[self.case3ID].activities) == 7
+        assert len(self.case1.activities) == 5
+        assert len(self.case3.activities) == 7
         # Checks that resources have been set correctly
-        assert len(self.eventlog.cases.caseList[self.case1ID].resources) == 4
-        assert len(self.eventlog.cases.caseList[self.case3ID].resources) == 5
+        assert len(self.case1.resources) == 4
+        assert len(self.case3.resources) == 5
 
     def test_resource_add(self) -> None:
         # Tests that 6 resources have been imported
@@ -163,15 +164,17 @@ class RunningExample(unittest.TestCase):
         assert "Ellen" in self.eventlog.resources.get_names()
         # Checks that events for resources have been set correctly
         self.resourcePeteID = self.eventlog.resources.get_id("Pete")
+        self.resourcePete = self.eventlog.resources.resourceList[self.resourcePeteID]
         self.resourceSaraID = self.eventlog.resources.get_id("Sara")
-        assert len(self.eventlog.resources.resourceList[self.resourcePeteID].events) == 7
-        assert len(self.eventlog.resources.resourceList[self.resourceSaraID].events) == 12
+        self.resourceSara = self.eventlog.resources.resourceList[self.resourceSaraID]
+        assert len(self.resourcePete.events) == 7
+        assert len(self.resourceSara.events) == 12
         # Checks that activities have been set correctly
-        assert len(self.eventlog.resources.resourceList[self.resourcePeteID].activities) == 3
-        assert len(self.eventlog.resources.resourceList[self.resourceSaraID].activities) == 2
+        assert len(self.resourcePete.activities) == 3
+        assert len(self.resourceSara.activities) == 2
         # Checks that cases have been set correctly
-        assert len(self.eventlog.resources.resourceList[self.resourcePeteID].cases) == 4
-        assert len(self.eventlog.resources.resourceList[self.resourceSaraID].cases) == 6
+        assert len(self.resourcePete.cases) == 4
+        assert len(self.resourceSara.cases) == 6
 
 
 if __name__ == "__main__":

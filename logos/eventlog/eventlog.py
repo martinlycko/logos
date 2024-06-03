@@ -65,27 +65,41 @@ class EventLog(BaseModel):
                   eventName, resourceName) -> None:
         # Adds a single event to each list of the event log
 
-        # Get IDs or add mandatory elements
+        # Get IDs or add mandatory elements, get elements
         activityID = self.activities.get_id_or_add(activityName)
+        activity = self.activities.activityList[activityID]
         caseID = self.cases.get_id_or_add(caseName)
+        case = self.cases.caseList[caseID]
         eventID = self.events.add_event(eventName, time, stage)
+        event = self.events.eventList[eventID]
 
         # Get IDs or add optional elements
         resourceID = None
         if resourceName is not None:
             resourceID = self.resources.get_id_or_add(resourceName)
+            resource = self.resources.resourceList[resourceID]
 
         # Add related IDs to activities, events, resources, and cases
-        self.activities.activityList[activityID].enrich(eventID,
-                                                        caseID,
-                                                        resourceID)
-        self.cases.caseList[caseID].enrich(eventID,
-                                           activityID,
-                                           resourceID)
         if resourceID is not None:
-            self.resources.resourceList[resourceID].enrich(eventID,
-                                                           activityID,
-                                                           caseID)
-        self.events.eventList[eventID].enrich(caseID,
-                                              activityID,
-                                              resourceID)
+            self.events.eventList[eventID].enrich(case,
+                                                  activity,
+                                                  resource)
+            self.activities.activityList[activityID].enrich(event,
+                                                            case,
+                                                            resource)
+            self.cases.caseList[caseID].enrich(event,
+                                               activity,
+                                               resource)
+            self.resources.resourceList[resourceID].enrich(event,
+                                                           activity,
+                                                           case)
+        else:
+            self.events.eventList[eventID].enrich(case,
+                                                  activity,
+                                                  None)
+            self.activities.activityList[activityID].enrich(event,
+                                                            case,
+                                                            None)
+            self.cases.caseList[caseID].enrich(event,
+                                               activity,
+                                               None)

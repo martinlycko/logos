@@ -1,6 +1,6 @@
 # For type safety and code quality
 from pydantic import BaseModel, NonNegativeInt
-from typing import List
+from typing import List, Any
 
 # From standard library
 from datetime import timedelta
@@ -11,10 +11,10 @@ class Case(BaseModel):
     id: NonNegativeInt              # Generated, position in cases
     name: str                       # Imported from the event log
 
-    # References to other elements in the model
-    events: List[NonNegativeInt] = []       # List of related event IDs
-    activities: List[NonNegativeInt] = []   # List of related activity IDs
-    resources: List[NonNegativeInt] = []    # List of related resource ID
+    # References to other elements, set as any to avoid circular import
+    events: List[Any] = []       # List of related events
+    activities: List[Any] = []   # List of related activities
+    resources: List[Any] = []    # List of related resources
 
     def enrich(self, eventID, activityID, resourceID) -> None:
         self.events.append(eventID)

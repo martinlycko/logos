@@ -1,6 +1,6 @@
 # For type safety and code quality
 from pydantic import BaseModel, NonNegativeInt
-from typing import List
+from typing import List, Any
 
 
 class Resource(BaseModel):
@@ -8,10 +8,10 @@ class Resource(BaseModel):
     id: NonNegativeInt          # Generated, position in resources
     name: str                   # Imported from the event log
 
-    # References to other elements in the model
-    events: List[NonNegativeInt] = []       # List of related event IDs
-    activities: List[NonNegativeInt] = []   # List of related activity IDs
-    cases: List[NonNegativeInt] = []        # List of related case ID
+    # References to other elements, set as any to avoid circular import
+    events: List[Any] = []       # List of related events
+    activities: List[Any] = []   # List of related activities
+    cases: List[Any] = []        # List of related cases
 
     def enrich(self, eventID, activityID, caseID) -> None:
         self.events.append(eventID)

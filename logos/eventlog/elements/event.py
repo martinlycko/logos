@@ -23,6 +23,9 @@ class Event(BaseModel):
     case: Any | None = None          # Related cases
     resource:  Any | None = None     # Related resources
 
+    def __lt__(self, other):
+        return self.time < other.time
+
     def enrich(self, case, activity, resource) -> None:
         self.case = case
         self.resource = resource

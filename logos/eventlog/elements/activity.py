@@ -21,7 +21,7 @@ class Activity(BaseModel):
                 and resourceID not in self.resources):
             self.resources.append(resourceID)
 
-    def count_exectution(self) -> PositiveInt:
+    def count_events(self) -> PositiveInt:
         # Returns the number of times an activity has been executed
         return len(self.events)
 
@@ -32,7 +32,10 @@ class Activity(BaseModel):
     def count_resources(self) -> PositiveInt | None:
         # Returns the number of resources that execute this activity
         # Returns none if resources have not been captured in the log
-        if self.log.resources.count == 0:
+        if len(self.resources) == 0:
             return None
         else:
             return len(self.resources)
+
+    def get_events(self) -> List[Any]:
+        return sorted(self.events)

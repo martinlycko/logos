@@ -1,5 +1,5 @@
 # For type safety and code quality
-from pydantic import BaseModel, NonNegativeInt
+from pydantic import BaseModel, NonNegativeInt, PositiveInt
 from typing import List, Any
 
 # From standard library
@@ -23,6 +23,26 @@ class Case(BaseModel):
         if (resourceID is not None
                 and resourceID not in self.resources):
             self.resources.append(resourceID)
+
+    def count_events(self) -> PositiveInt:
+        # Returns the number of events a case is associated with
+        return len(self.events)
+
+    def count_activities(self) -> PositiveInt:
+        # Returns the number of activities executed for a case
+        return len(self.activities)
+
+    def count_resources(self) -> PositiveInt | None:
+        # Returns the number of resources that worked on this case
+        # Returns none if resources have not been captured in the log
+        if len(self.resources) == 0:
+            return None
+        else:
+            return len(self.resources)
+
+    def get_events(self) -> List[Any]:
+        # Returns chronologically sorted events associated with the case
+        return sorted(self.events)
 
     def turnaround_time(self) -> timedelta:
         # TO BE CHECKED

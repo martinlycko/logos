@@ -18,13 +18,17 @@ class Events(BaseModel):
                 return event.id
         return None
 
-    def add_event(self, name, time, stage) -> NonNegativeInt:
+    def add_event(self, name, time, stage,
+                  activity, case, resource) -> NonNegativeInt:
         # Adds a event to the event list and returns its ID
         new_event = Event(
             id=len(self.eventList),
             name=name,
             time=time,
-            stage=stage
+            stage=stage,
+            activity=activity,
+            case=case,
+            resource=resource
         )
         self.eventList.append(new_event)
         return new_event.id

@@ -59,47 +59,36 @@ class EventLog(BaseModel):
                                        time, stage,
                                        eventName, resourceName)
                     line_count = line_count+1
+                # Sort the event list by event time
+                self.events.eventList.sort()
+                self.enrich_elements()
 
     def add_event(self, activityName, caseName,
                   time, stage,
                   eventName, resourceName) -> None:
         # Adds a single event to each list of the event log
 
-        # Get IDs or add mandatory elements, get elements
+        # Get IDs or add mandatory elements, get elements - except event
         activityID = self.activities.get_id_or_add(activityName)
         activity = self.activities.activityList[activityID]
         caseID = self.cases.get_id_or_add(caseName)
         case = self.cases.caseList[caseID]
-        eventID = self.events.add_event(eventName, time, stage)
-        event = self.events.eventList[eventID]
 
         # Get IDs or add optional elements
         resourceID = None
+        resource = None
         if resourceName is not None:
             resourceID = self.resources.get_id_or_add(resourceName)
             resource = self.resources.resourceList[resourceID]
 
-        # Add related IDs to activities, events, resources, and cases
-        if resourceID is not None:
-            self.events.eventList[eventID].enrich(case,
-                                                  activity,
-                                                  resource)
-            self.activities.activityList[activityID].enrich(event,
-                                                            case,
-                                                            resource)
-            self.cases.caseList[caseID].enrich(event,
-                                               activity,
-                                               resource)
-            self.resources.resourceList[resourceID].enrich(event,
-                                                           activity,
-                                                           case)
-        else:
-            self.events.eventList[eventID].enrich(case,
-                                                  activity,
-                                                  None)
-            self.activities.activityList[activityID].enrich(event,
-                                                            case,
-                                                            None)
-            self.cases.caseList[caseID].enrich(event,
-                                               activity,
-                                               None)
+        self.events.add_event(eventName, time, stage, activity, case, resource)
+
+    def enrich_elements(self):
+        eventID = 0
+        for event in self.events.eventList:
+            event.id = eventID
+            # Get the relevant elements
+            event.activity.enrich(eventID, event.case, event.resource)
+            event.case.enrich(eventID, event.activity, event.resource)
+            event.case.resource(eventID, event.activity, event.case)
+            eventID =+ 1

@@ -19,14 +19,9 @@ class Event(BaseModel):
     stage: EventType            # Lifecycle stage of event
 
     # References to other elements, set as any to avoid circular import
-    activity: Any | None = None      # Related activities
-    case: Any | None = None          # Related cases
+    activity: Any = None      # Related activities
+    case: Any = None          # Related cases
     resource:  Any | None = None     # Related resources
 
     def __lt__(self, other):
         return self.time < other.time
-
-    def enrich(self, case, activity, resource) -> None:
-        self.case = case
-        self.resource = resource
-        self.activity = activity

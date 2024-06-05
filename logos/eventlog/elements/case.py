@@ -25,7 +25,7 @@ class Case(BaseModel):
                 and resourceID not in self.resources):
             self.resources.append(resourceID)
         if eventID.stage is EventType.complete:
-            self.path.append(eventID)
+            self.path.append(activityID)
 
     def count_events(self) -> PositiveInt:
         # Returns the number of events a case is associated with

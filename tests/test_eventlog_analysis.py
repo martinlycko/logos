@@ -12,6 +12,8 @@ if True:
     from logos.adapters.EventLogCSV import EventLogCSV
     from logos.shared_utils.eventtypes import EventType
     from logos.eventlog.eventlog import EventLog
+    from logos.eventlog.analysis.paths import Paths
+    from logos.eventlog.analysis.path import Path
 
 
 class RunningExample(unittest.TestCase):
@@ -32,15 +34,19 @@ class RunningExample(unittest.TestCase):
         )
         self.eventlog = EventLog()
         self.eventlog.add_events(self.sourcefile)
+        self.eventlog.analyse_paths()
 
-    def test_paths(self) -> None:
+    def test_case_paths(self) -> None:
         self.case1 = self.eventlog.cases.get("1")
         len(self.case1.path) == 5
-        self.case1.path[0].activity.name == "register request"
-        self.case1.path[1].activity.name == "examine thoroughly"
-        self.case1.path[2].activity.name == "check ticket"
-        self.case1.path[3].activity.name == "decide"
-        self.case1.path[4].activity.name == "reject request"
+        self.case1.path[0].name == "register request"
+        self.case1.path[1].name == "examine thoroughly"
+        self.case1.path[2].name == "check ticket"
+        self.case1.path[3].name == "decide"
+        self.case1.path[4].name == "reject request"
+
+    def test_paths(self) -> None:
+        pass
 
 
 if __name__ == "__main__":

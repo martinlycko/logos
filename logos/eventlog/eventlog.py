@@ -10,6 +10,7 @@ from logos.eventlog.elements.activities import Activities
 from logos.eventlog.elements.cases import Cases
 from logos.eventlog.elements.resources import Resources
 from logos.eventlog.elements.events import Events
+from logos.eventlog.analysis.paths import Paths
 
 # Import of supported adapter classes for source logs
 from logos.adapters.EventLogCSV import EventLogCSV
@@ -21,6 +22,7 @@ class EventLog(BaseModel):
     activities: Activities = Activities()   # Contains a list of all activities
     cases: Cases = Cases()                  # Contains a list of all cases
     resources: Resources = Resources()      # Contains a list of all resources
+    paths: Paths = Paths()                  # Contains a list of paths
 
     def add_events(self, sourcelog) -> None:
         # Imports event logs parsed through the adapter classes
@@ -93,3 +95,7 @@ class EventLog(BaseModel):
             if event.resource is not None:
                 event.resource.enrich(event, event.activity, event.case)
             eventID = eventID+1
+
+    def analyse_paths(self):
+        for case in self.cases.caseList:
+            self.paths.add_case(case)

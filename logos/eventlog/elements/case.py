@@ -2,8 +2,8 @@
 from pydantic import BaseModel, NonNegativeInt, PositiveInt
 from typing import List, Any
 
-# From standard library
-from datetime import timedelta
+# From other modules
+from ...shared_utils.eventtypes import EventType
 
 
 class Case(BaseModel):
@@ -12,9 +12,10 @@ class Case(BaseModel):
     name: str                       # Imported from the event log
 
     # References to other elements, set as any to avoid circular import
-    events: List[Any] = []       # List of related events
+    events: List[Any] = []       # List of related, ordered events
     activities: List[Any] = []   # List of related activities
     resources: List[Any] = []    # List of related resources
+    path: List[Any] = []         # List of related, ordered completion events
 
     def enrich(self, eventID, activityID, resourceID) -> None:
         self.events.append(eventID)
@@ -23,6 +24,8 @@ class Case(BaseModel):
         if (resourceID is not None
                 and resourceID not in self.resources):
             self.resources.append(resourceID)
+        if eventID.stage is EventType.complete:
+            self.path.append(eventID)
 
     def count_events(self) -> PositiveInt:
         # Returns the number of events a case is associated with
@@ -39,9 +42,3 @@ class Case(BaseModel):
             return None
         else:
             return len(self.resources)
-
-    def turnaround_time(self) -> timedelta:
-        # TO BE CHECKED
-        # Returns the difference between the first event's received time
-        # and the last event's completed time
-        return self.events[0].time - self.events[0].received

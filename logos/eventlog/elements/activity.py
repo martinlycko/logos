@@ -37,5 +37,3 @@ class Activity(BaseModel):
         else:
             return len(self.resources)
 
-    def get_events(self) -> List[Any]:
-        return sorted(self.events)

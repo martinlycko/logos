@@ -40,10 +40,6 @@ class Case(BaseModel):
         else:
             return len(self.resources)
 
-    def get_events(self) -> List[Any]:
-        # Returns chronologically sorted events associated with the case
-        return sorted(self.events)
-
     def turnaround_time(self) -> timedelta:
         # TO BE CHECKED
         # Returns the difference between the first event's received time

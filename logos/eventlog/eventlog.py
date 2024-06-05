@@ -88,7 +88,8 @@ class EventLog(BaseModel):
         for event in self.events.eventList:
             event.id = eventID
             # Get the relevant elements
-            event.activity.enrich(eventID, event.case, event.resource)
-            event.case.enrich(eventID, event.activity, event.resource)
-            event.case.resource(eventID, event.activity, event.case)
-            eventID =+ 1
+            event.activity.enrich(event, event.case, event.resource)
+            event.case.enrich(event, event.activity, event.resource)
+            if event.resource is not None:
+                event.resource.enrich(event, event.activity, event.case)
+            eventID = eventID+1

@@ -125,8 +125,8 @@ class RunningExample(unittest.TestCase):
         self.activityRegister = self.eventlog.activities.activityList[self.activityRegisterID]
         assert self.activityDecide.count_events() == 9
         assert self.activityRegister.count_events() == 6
-        assert self.activityDecide.get_events()[0].name == "35654488"
-        assert self.activityRegister.get_events()[0].name == "35654423"
+        assert self.activityDecide.events[0].name == "35654488"
+        assert self.activityRegister.events[0].name == "35654423"
         # Checks that cases have been set correctly
         assert self.activityDecide.count_cases() == 6
         assert self.activityRegister.count_cases() == 6
@@ -153,8 +153,8 @@ class RunningExample(unittest.TestCase):
         self.case3 = self.eventlog.cases.caseList[self.case3ID]
         assert self.case1.count_events() == 5
         assert self.case3.count_events() == 9
-        assert self.case1.get_events()[0].name == "35654423"
-        assert self.case3.get_events()[0].name == "35654521"
+        assert self.case1.events[0].name == "35654423"
+        assert self.case3.events[0].name == "35654521"
         # Checks that activities have been set correctly
         assert self.case1.count_activities() == 5
         assert self.case3.count_activities() == 7

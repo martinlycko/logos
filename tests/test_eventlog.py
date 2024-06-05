@@ -119,10 +119,8 @@ class RunningExample(unittest.TestCase):
 
     def test_activities_enrich(self) -> None:
         # Checks that events for resources have been set correctly
-        self.activityDecideID = self.eventlog.activities.get_id("decide")
-        self.activityDecide = self.eventlog.activities.activityList[self.activityDecideID]
-        self.activityRegisterID = self.eventlog.activities.get_id("register request")
-        self.activityRegister = self.eventlog.activities.activityList[self.activityRegisterID]
+        self.activityDecide = self.eventlog.activities.get("decide")
+        self.activityRegister = self.eventlog.activities.get("register request")
         assert self.activityDecide.count_events() == 9
         assert self.activityRegister.count_events() == 6
         assert self.activityDecide.events[0].name == "35654488"
@@ -147,10 +145,8 @@ class RunningExample(unittest.TestCase):
 
     def test_cases_enrich(self) -> None:
         # Checks that events for cases have been set correctly
-        self.case1ID = self.eventlog.cases.get_id("1")
-        self.case1 = self.eventlog.cases.caseList[self.case1ID]
-        self.case3ID = self.eventlog.cases.get_id("3")
-        self.case3 = self.eventlog.cases.caseList[self.case3ID]
+        self.case1 = self.eventlog.cases.get("1")
+        self.case3 = self.eventlog.cases.get("3")
         assert self.case1.count_events() == 5
         assert self.case3.count_events() == 9
         assert self.case1.events[0].name == "35654423"

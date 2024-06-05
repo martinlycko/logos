@@ -41,6 +41,14 @@ class Cases(BaseModel):
             # Returns the ID of the existing case in the list
             return ID
 
+    def get(self, name) -> Case | None:
+        # Returns the case for the provided name
+        # Returns None if the case is not found
+        for case in self.caseList:
+            if case.name == name:
+                return case
+        return None
+
     def count(self) -> NonNegativeInt:
         return len(self.caseList)
 

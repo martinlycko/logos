@@ -38,6 +38,14 @@ class Activities(BaseModel):
             # Returns the ID of the existing activity in the list
             return ID
 
+    def get(self, name) -> Activity | None:
+        # Returns the Activity for the provided name
+        # Returns None if the activity is not found
+        for activity in self.activityList:
+            if activity.name == name:
+                return activity
+        return None
+
     def count(self) -> NonNegativeInt:
         return len(self.activityList)
 

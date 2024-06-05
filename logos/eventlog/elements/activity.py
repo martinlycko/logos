@@ -36,4 +36,3 @@ class Activity(BaseModel):
             return None
         else:
             return len(self.resources)
-

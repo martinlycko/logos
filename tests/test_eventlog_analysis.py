@@ -38,15 +38,18 @@ class RunningExample(unittest.TestCase):
 
     def test_case_paths(self) -> None:
         self.case1 = self.eventlog.cases.get("1")
-        len(self.case1.path) == 5
-        self.case1.path[0].name == "register request"
-        self.case1.path[1].name == "examine thoroughly"
-        self.case1.path[2].name == "check ticket"
-        self.case1.path[3].name == "decide"
-        self.case1.path[4].name == "reject request"
+        assert len(self.case1.path) == 5
+        assert self.case1.path[0].name == "register request"
+        assert self.case1.path[1].name == "examine thoroughly"
+        assert self.case1.path[2].name == "check ticket"
+        assert self.case1.path[3].name == "decide"
+        assert self.case1.path[4].name == "reject request"
 
     def test_paths(self) -> None:
-        pass
+        assert self.eventlog.paths.count() == 6
+        self.case1 = self.eventlog.cases.get("1")
+        self.case1path = self.eventlog.paths.get_path(self.case1)
+        assert self.case1path.activities == self.case1.path
 
 
 if __name__ == "__main__":

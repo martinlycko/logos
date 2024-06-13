@@ -1,5 +1,5 @@
 # For type safety and code quality
-from pydantic import BaseModel
+from pydantic import BaseModel, NonNegativeInt
 from typing import List
 
 # Reference to other event log classes
@@ -27,3 +27,12 @@ class Paths(BaseModel):
                 new_path.activities.append(activity)
             new_path.cases.append(case)
         self.pathList.append(new_path)
+
+    def count(self) -> NonNegativeInt:
+        return len(self.pathList)
+
+    def get_path(self, case) -> Path:
+        for path in self.pathList:
+            if case.path == path.activities:
+                # Add the case to the path's case list
+                return path

@@ -1,6 +1,6 @@
 # For type safety and code quality
 from pydantic import BaseModel, NonNegativeInt
-from typing import List, Any
+from typing import List
 
 # From other modules
 from ..elements.case import Case

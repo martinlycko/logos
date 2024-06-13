@@ -12,8 +12,6 @@ if True:
     from logos.adapters.EventLogCSV import EventLogCSV
     from logos.shared_utils.eventtypes import EventType
     from logos.eventlog.eventlog import EventLog
-    from logos.eventlog.analysis.pathing.paths import Paths
-    from logos.eventlog.analysis.pathing.path import Path
 
 
 class RunningExample(unittest.TestCase):

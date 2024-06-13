@@ -10,7 +10,7 @@ from logos.eventlog.elements.activities import Activities
 from logos.eventlog.elements.cases import Cases
 from logos.eventlog.elements.resources import Resources
 from logos.eventlog.elements.events import Events
-from logos.eventlog.analysis.paths import Paths
+from logos.eventlog.analysis.pathing.paths import Paths
 
 # Import of supported adapter classes for source logs
 from logos.adapters.EventLogCSV import EventLogCSV

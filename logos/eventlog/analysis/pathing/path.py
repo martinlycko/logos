@@ -3,8 +3,8 @@ from pydantic import BaseModel, NonNegativeInt
 from typing import List
 
 # From other modules
-from ..elements.case import Case
-from ..elements.activity import Activity
+from ...elements.case import Case
+from ...elements.activity import Activity
 
 
 class Path(BaseModel):

@@ -41,4 +41,3 @@ class PathTree(BaseModel):
                         # Get relevant link
                         # Add case to link's case list
                 # Update precedingNode to the new / identified node
-                

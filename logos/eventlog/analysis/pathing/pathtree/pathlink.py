@@ -1,10 +1,9 @@
 # For type safety and code quality
 from pydantic import BaseModel, NonNegativeInt
-from typing import List
+from typing import List, Any
 
 # From other modules
 from ....elements.case import Case
-from ....elements.activity import Activity
 
 
 class PathLink(BaseModel):
@@ -12,6 +11,6 @@ class PathLink(BaseModel):
     # Each link captures a source activity, target activity
     # and a collection of cases making this transition
     id: NonNegativeInt      # Generated, id of this link
-    source: Activity        # Source activity of this link
-    target: Activity        # Target activity, subsequent of source activity
+    source: Any             # Source node of this link
+    target: Any             # Target node, subsequent of souce node
     cases: List[Case] = []  # List of cases that follow this path

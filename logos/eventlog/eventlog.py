@@ -11,6 +11,7 @@ from logos.eventlog.elements.cases import Cases
 from logos.eventlog.elements.resources import Resources
 from logos.eventlog.elements.events import Events
 from logos.eventlog.analysis.pathing.paths.paths import Paths
+from logos.eventlog.analysis.pathing.pathtree.pathtree import PathTree
 
 # Import of supported adapter classes for source logs
 from logos.adapters.EventLogCSV import EventLogCSV
@@ -23,6 +24,7 @@ class EventLog(BaseModel):
     cases: Cases = Cases()                  # Contains a list of all cases
     resources: Resources = Resources()      # Contains a list of all resources
     paths: Paths = Paths()                  # Contains a list of paths
+    pathtree: PathTree = PathTree()
 
     def add_events(self, sourcelog) -> None:
         # Imports event logs parsed through the adapter classes

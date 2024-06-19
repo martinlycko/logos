@@ -1,10 +1,10 @@
 # For type safety and code quality
-from pydantic import BaseModel, NonNegativeInt
+from pydantic import BaseModel
 from typing import List
 
 # From other modules
 from .pathnode import PathNode
-from ....elements.case import Case
+from .pathlink import PathLink
 
 
 class PathTree(BaseModel):
@@ -12,32 +12,50 @@ class PathTree(BaseModel):
     # These are the start events of the process
     startEvents: List[PathNode] = []  # List of nodes starting
 
-    def add_case(case) -> None:
+    def add_case(self, case) -> None:
         # Adds a new case to the pathtree
-        
+
         # Reference to preceding node or none if first activity
         precedingNode = None
 
         for activity in case.path:
-            # For the start event of this node / precedingNode == None
-                # Check if the activity is already in the startEvents list
-                    # If not,
-                        # Create a new node
-                        # Set nodes activity to current activity
-                # Update precedingNode to the newly created / identified node
-
-            # For all non-start event activities of the case / precedingNode <> None
-                # Check if the activity is already in the precedingNode's subsequents targets
-                    # If not
-                        # Create a new node
-                            # Set nodes activity to current activity
-                        # Create a new link
-                            # Set target to current activity 
-                            # Set origin to precedingNode's acticity
-                                # Targets / Origins have to be nodes too
-                                # Not activities
-                            # Add case to link's case list
-                    # If it is
-                        # Get relevant link
-                        # Add case to link's case list
-                # Update precedingNode to the new / identified node
+            # For the start event of this node
+            if precedingNode is None:
+                inList = False
+                # Check each item in the startEvent list
+                for node in self.startEvents:
+                    if node.activity == activity:
+                        inList = True
+                        precedingNode = node
+                if inList is False:
+                    # Create a new node
+                    newNode = PathNode(
+                         activity=activity
+                         )
+                    self.startEvents.append(newNode)
+                    # Update precedingNode to the newly created
+                    precedingNode = newNode
+            # For all non-start event activities of the case
+            else:
+                inList = False
+                # Check each item in the startEvent list
+                for link in precedingNode.subsequents:
+                    if link.target.activity == activity:
+                        inList = True
+                        link.cases.append(case)
+                        precedingNode = link.target
+                if inList is False:
+                    # Create a new node
+                    newNode = PathNode(
+                         activity=activity
+                         )
+                    # Create a new link
+                    newLink = PathLink(
+                        source=precedingNode,
+                        target=newNode
+                        )
+                    # Connect case, node, and link
+                    newNode.subsequents.append(newLink)
+                    newLink.cases.append(case)
+                    # Update precedingNode to the newly created
+                    precedingNode = newNode

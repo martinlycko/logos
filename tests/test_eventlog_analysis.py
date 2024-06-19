@@ -50,10 +50,9 @@ class RunningExample(unittest.TestCase):
         assert self.case1path.activities == self.case1.path
 
     def test_pathtree(self) -> None:
-        self.case1 = self.eventlog.cases.get("1")
-        self.eventlog.pathtree.add_case(self.case1)
-        for node in self.eventlog.pathtree.startEvents:
-            print(node.activity.name)
+        # for node in self.eventlog.pathtree.children:
+          #   print(node.activity.name)
+        print(self.eventlog.pathtree)
 
 
 if __name__ == "__main__":

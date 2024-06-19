@@ -101,3 +101,4 @@ class EventLog(BaseModel):
     def analyse_paths(self):
         for case in self.cases.caseList:
             self.paths.add_case(case)
+            self.pathtree.add_case(case)

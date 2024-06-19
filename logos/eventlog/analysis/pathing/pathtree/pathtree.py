@@ -4,13 +4,12 @@ from typing import List
 
 # From other modules
 from .pathnode import PathNode
-from .pathlink import PathLink
 
 
 class PathTree(BaseModel):
     # Contains the top level path nodes
     # These are the start events of the process
-    startEvents: List[PathNode] = []  # List of nodes starting
+    children: List[PathNode] = []  # List of nodes starting
 
     def add_case(self, case) -> None:
         # Adds a new case to the pathtree
@@ -18,12 +17,12 @@ class PathTree(BaseModel):
         # Reference to preceding node or none if first activity
         precedingNode = None
 
-        for activity in case.path:
+        for activity in case.path:            
             # For the start event of this node
             if precedingNode is None:
                 inList = False
                 # Check each item in the startEvent list
-                for node in self.startEvents:
+                for node in self.children:
                     if node.activity == activity:
                         inList = True
                         precedingNode = node
@@ -32,30 +31,31 @@ class PathTree(BaseModel):
                     newNode = PathNode(
                          activity=activity
                          )
-                    self.startEvents.append(newNode)
+                    newNode.cases.append(case)
+                    self.children.append(newNode)
                     # Update precedingNode to the newly created
                     precedingNode = newNode
             # For all non-start event activities of the case
             else:
                 inList = False
                 # Check each item in the startEvent list
-                for link in precedingNode.subsequents:
-                    if link.target.activity == activity:
+                for node in precedingNode.children:
+                    if node.activity == activity:
                         inList = True
-                        link.cases.append(case)
-                        precedingNode = link.target
+                        node.cases.append(case)
+                        precedingNode = node
                 if inList is False:
                     # Create a new node
                     newNode = PathNode(
                          activity=activity
                          )
-                    # Create a new link
-                    newLink = PathLink(
-                        source=precedingNode,
-                        target=newNode
-                        )
-                    # Connect case, node, and link
-                    newNode.subsequents.append(newLink)
-                    newLink.cases.append(case)
+                    newNode.cases.append(case)
+                    precedingNode.children.append(newNode)
                     # Update precedingNode to the newly created
                     precedingNode = newNode
+
+    def __str__(self, level=0):
+        ret = ""
+        for child in self.children:
+            ret += child.__str__(level+1)
+        return ret
